@@ -33,6 +33,7 @@ geom_half_point <- function(
     )
 }
 
+#' @export
 GeomHalfPoint <- ggproto(
   "GeomHalfPoint", 
   Geom,

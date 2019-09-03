@@ -1,3 +1,4 @@
+#' @export
 StatHalfPoint <- ggproto(
   "StatHalfPoint", StatBoxplot,
   required_aes = c("y"),

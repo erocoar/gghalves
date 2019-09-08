@@ -1,8 +1,6 @@
-#TODO add side arg.
-#TODO add stat_violin to get xvals from StatBoxplot
 geom_half_violin <- function(
   mapping = NULL, data = NULL,
-  stat = "ydensity", position = "dodge",
+  stat = "half_ydensity", position = "dodge",
   ...,
   side = "l",
   draw_quantiles = NULL,
@@ -20,6 +18,7 @@ geom_half_violin <- function(
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(
+      side = side,
       trim = trim,
       scale = scale,
       draw_quantiles = draw_quantiles,
@@ -35,31 +34,36 @@ geom_half_violin <- function(
 #' @export
 GeomHalfViolin <- ggproto(
   "GeomHalfViolin", GeomViolin,
-  
+
   setup_data = function(data, params) {
-    data$width <- data$width %||%
-      params$width %||% (resolution(data$x, FALSE) * 0.9)
-    
-    # ymin, ymax, xmin, and xmax define the bounding rectangle for each group
-    ggplot2:::dapply(data, "group", transform,
-           xmin = x - width / 2,
-           xmax = x 
-    )
+    x_data    <- GeomBoxplot$setup_data(data, NULL)
+    data$xmin <- x_data$xmin
+    data$xmax <- x_data$xmax
+    data
   },
 
-  draw_group = function(self, data, ..., draw_quantiles = NULL) {
+  draw_group = function(self, data, side = "l", ..., draw_quantiles = NULL) {
     # Find the points for the line to go all the way around
-    data <- transform(
-      data,
-      xminv = x + violinwidth * (xmin - x),
-      xmaxv = x
+    if (side == "l") {
+      data <- transform(
+        data,
+        xminv = x + violinwidth * (xmin - x),
+        xmaxv = x
+        )
+    } else {
+      data <- transform(
+        data,
+        xminv = x,
+        xmaxv = x + violinwidth * (xmax - x)
       )
+    }
+    
     # Make sure it's sorted properly to draw the outline
     newdata <- rbind(
       transform(data, x = xminv)[order(data$y), ],
       transform(data, x = xmaxv)[order(data$y, decreasing = TRUE), ]
     )
-    
+
     # Close the polygon: set first and last point the same
     # Needed for coord_polar and such
     newdata <- rbind(newdata, newdata[1,])

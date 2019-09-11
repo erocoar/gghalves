@@ -83,10 +83,7 @@ geom_half_boxplot <- function(
 #' @export
 GeomHalfBoxplot <- ggproto("GeomHalfBoxplot", GeomBoxplot,
   setup_data = function(data, params) {
-    ddtest <<- data
-    dd <- GeomBoxplot$setup_data(data, params)
-    ddtest2 <<- dd
-    dd
+    GeomBoxplot$setup_data(data, params)
   },
                            
   draw_group = function(
@@ -108,7 +105,6 @@ GeomHalfBoxplot <- ggproto("GeomHalfBoxplot", GeomBoxplot,
     }
     
     xrange <- data$xmax - data$xmin
-    ddb <<- data
     common <- data.frame(
       colour = data$colour,
       size = data$size,
@@ -164,6 +160,7 @@ GeomHalfBoxplot <- ggproto("GeomHalfBoxplot", GeomBoxplot,
       stringsAsFactors = FALSE
       )
     
+    bb <<- box
     if (!is.null(data$outliers) && length(data$outliers[[1]] >= 1)) {
       outliers <- ggplot2:::new_data_frame(list(
         y = data$outliers[[1]],

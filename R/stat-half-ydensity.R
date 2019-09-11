@@ -46,7 +46,7 @@ StatHalfYdensity <- ggproto(
   compute_group = function(data, scales, width = NULL, bw = "nrd0", adjust = 1,
                            kernel = "gaussian", trim = TRUE, na.rm = FALSE) {
     StatYdensity$compute_group(data, scales, width = width, bw = bw, adjust = adjust,
-                               kernel = kernel, trim = trim, na.rm = na.rm),
+                               kernel = kernel, trim = trim, na.rm = na.rm)},
   
   compute_panel = function(self, data, scales, width = NULL, bw = "nrd0", adjust = 1,
                            kernel = "gaussian", trim = TRUE, na.rm = FALSE,

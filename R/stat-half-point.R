@@ -18,21 +18,22 @@ StatHalfPoint <- ggproto(
   },
   
   compute_group = function(data, scales, width = NULL, na.rm = FALSE, coef = 1.5) {
-    # cat("Stat Grp \n")
-    # dx1 <<- data
-    # df <- StatBoxplot$compute_group(data, scales, width, na.rm, coef)
+    dx1 <<- data
+    df <- StatBoxplot$compute_group(data, scales, width, na.rm, coef)
     # dx2 <<- df
-    # data.frame(
+    # df2 <- data.frame(
     #   y      = data$y,
     #   x      = df$x,
-    #   width  = df$width %||% NULL,
+    #   # width  = df$width %||% NULL,
     #   colour = data$colour ,
     #   shape  = data$shape,
-    #   size   = data$size, 
+    #   size   = data$size,
     #   fill   = data$fill,
     #   alpha  = data$alpha,
     #   stroke = data$stroke
     # )
+    # df2$width <- df$width %||% NULL
+    # df2
     
     df$point_y      <- list(data$y)
     df$point_colour <- list(data$colour)

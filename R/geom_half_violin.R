@@ -45,7 +45,6 @@ geom_half_violin <- function(
 #' @format NULL
 #' @usage NULL
 #' @importFrom ggplot2 ggproto GeomViolin GeomBoxplot GeomPolygon
-#' @importFrom scales zero_range
 #' @export
 GeomHalfViolin <- ggproto(
   "GeomHalfViolin", GeomViolin,

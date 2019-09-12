@@ -9,7 +9,7 @@ geom_half_boxplot(mapping = NULL, data = NULL, stat = "boxplot",
   outlier.color = NULL, outlier.fill = NULL, outlier.shape = 19,
   outlier.size = 1.5, outlier.stroke = 0.5, outlier.alpha = NULL,
   notch = FALSE, notchwidth = 0.5, varwidth = FALSE,
-  errorbar.draw = FALSE, errorbar.length = 0.5, na.rm = FALSE,
+  errorbar.draw = TRUE, errorbar.length = 0.5, na.rm = FALSE,
   show.legend = NA, inherit.aes = TRUE)
 }
 \arguments{
@@ -141,7 +141,7 @@ the body (defaults to \code{notchwidth = 0.5}).}
 square-roots of the number of observations in the groups (possibly
 weighted, using the \code{weight} aesthetic).}
 
-\item{errorbar.draw}{Draw horizontal whiskers at the top and bottom (the IQR). Defaults to `FALSE`.}
+\item{errorbar.draw}{Draw horizontal whiskers at the top and bottom (the IQR). Defaults to `TRUE`.}
 
 \item{errorbar.length}{Length of the horizontal whiskers (errorbar). Defaults to half the width of the half-boxplot.}
 
@@ -158,6 +158,8 @@ display.}
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link[=borders]{borders()}}.}
+
+\item{boxplot.center}{Whether to center the half-boxplot instead of aligning it to its respective side.}
 }
 \description{
 A half boxplot

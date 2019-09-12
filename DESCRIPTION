@@ -1,24 +1,21 @@
 Package: gghalves
-Title: 
+Title: Compose half-half plots using your favourite geoms.
 Version: 0.0.1
 Authors@R: person("Frederik", "Tiedemann", email = "fj.tiedemann@googlemail.com", role = c("aut", "cre"))
-Description: 
-URL: https://github.com/erocoar/ggpol
+Description: A 'ggplot2' extension for easy plotting of half-half geom combinations. Think half boxplot and half jitterplot, or half violinplot and half dotplot.
+URL: https://github.com/erocoar/gghalves
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Depends:
-	ggplot2 (>= 2.2.1),
+	ggplot2 (>= 3.0.0),
 	R (>= 3.4.0)
 Imports:
 	grid,
 	gtable,
-	grDevices,
-	plyr,
-	rlang,
-	dplyr
+	grDevices
 RoxygenNote: 6.1.1
 Suggests:
 	knitr,
-    rmarkdown
+    	rmarkdown
 Collate: 

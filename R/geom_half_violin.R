@@ -1,3 +1,16 @@
+#' Half Violin plot
+#'
+#' A violin plot is a compact display of a continuous distribution. It is a
+#' blend of [geom_boxplot()] and [geom_density()]: a
+#' violin plot is a mirrored density plot displayed in the same way as a
+#' boxplot.
+#'
+#' @inheritParams ggplot2::geom_violin
+#' @param side The side on which to draw the half violin plot. "l" for left, "r" for right, defaults to "l".
+#' @importFrom ggplot2 layer
+#' @export
+#' @references Hintze, J. L., Nelson, R. D. (1998) Violin Plots: A Box
+#' Plot-Density Trace Synergism. The American Statistician 52, 181-184.
 geom_half_violin <- function(
   mapping = NULL, data = NULL,
   stat = "half_ydensity", position = "dodge",
@@ -28,9 +41,11 @@ geom_half_violin <- function(
   )
 }
 
-#' @rdname ggplot2-ggproto
+#' @rdname gghalves-extensions
 #' @format NULL
 #' @usage NULL
+#' @importFrom ggplot2 ggproto GeomViolin GeomBoxplot GeomPolygon
+#' @importFrom scales zero_range
 #' @export
 GeomHalfViolin <- ggproto(
   "GeomHalfViolin", GeomViolin,
@@ -73,7 +88,7 @@ GeomHalfViolin <- ggproto(
       stopifnot(all(draw_quantiles >= 0), all(draw_quantiles <= 1))
       
       # Compute the quantile segments and combine with existing aesthetics
-      quantiles <- create_quantile_segment_frame(data, draw_quantiles)
+      quantiles <- ggplot2:::create_quantile_segment_frame(data, draw_quantiles)
       aesthetics <- data[
         rep(1, nrow(quantiles)),
         setdiff(names(data), c("x", "y", "group")),

@@ -1,10 +1,11 @@
 #' Points with jitter for half geoms.
 #'
-#' @inheritParams ggplot2::geom_boxplot
-#' @importFrom ggplot2 layer position_dodge2 new_data_frame aes
+#' @inheritParams ggplot2::geom_point
+#' @param side The side on which to draw the half violin plot. "l" for left, "r" for right, defaults to "l".
+#' @param transformation A `Position` object to calculate the transformation of the points. Defaults to `ggplot2::PositionJitter`.
+#' @param transformation_params A `list` containing named parameter values for the `transformation` object. Defaults to `list(width = NULL, height = NULL)`. For `ggplot2::PositionJitter`, keyword arguments can be `width`, `height` and `seed`.
+#' @importFrom ggplot2 layer
 #' @export
-#' @examples
-
 geom_half_point <- function(
   mapping = NULL, data = NULL,
   stat = "HalfPoint", position = "dodge2",
@@ -33,6 +34,10 @@ geom_half_point <- function(
     )
 }
 
+#' @rdname gghalves-extensions
+#' @format NULL
+#' @usage NULL
+#' @importFrom ggplot2 ggproto Geom GeomBoxplot GeomPoint
 #' @export
 GeomHalfPoint <- ggproto(
   "GeomHalfPoint", 
@@ -59,7 +64,6 @@ GeomHalfPoint <- ggproto(
     data, panel_params, coord, na.rm = FALSE, side = "r", 
     transformation = PositionJitter,
     transformation_params = list(width = NULL, height = NULL)) {
-    ddn <<- data
     if (is.character(data$shape)) {
       data$shape <- translate_shape_string(data$shape)
     }
@@ -91,7 +95,7 @@ GeomHalfPoint <- ggproto(
       trans_positions$x <- (data$xmax- data$x) * (
         trans_positions$x - min(trans_positions$x)) / (
           max(trans_positions$x) - min(trans_positions$x)) + data$x - 0.045
-    }#TODO parameterize left-shift
+    } #TODO parameterize left-shift
       
 
     point_df <- data.frame(
@@ -108,17 +112,5 @@ GeomHalfPoint <- ggproto(
     )
     
     GeomPoint$draw_panel(point_df, panel_params, coord)
-    # pointgrob <- pointsGrob(
-    #   coords$x, coords$y,
-    #   pch = coords$shape,
-    #   gp = gpar(
-    #     col = alpha(coords$colour, coords$alpha),
-    #     fill = alpha(coords$fill, coords$alpha),
-    #     fontsize = coords$size * .pt + coords$stroke * .stroke / 2,
-    #     lwd = coords$stroke * .stroke / 2
-    #   )
-    # )
-    # pointgrob$name <- "geom_half_point"
-    # pointgrob
   }
 )

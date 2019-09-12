@@ -1,8 +1,44 @@
+#' Half dot plot with sensible parameter settings.
+#'
+#' In a dot plot, the width of a dot corresponds to the bin width
+#' (or maximum width, depending on the binning algorithm), and dots are
+#' stacked, with each dot representing one observation.
+#'
+#' There are two basic approaches: \emph{dot-density} and \emph{histodot}.
+#' With dot-density binning, the bin positions are determined by the data and
+#' `binwidth`, which is the maximum width of each bin. See Wilkinson
+#' (1999) for details on the dot-density binning algorithm. With histodot
+#' binning, the bins have fixed positions and fixed widths, much like a
+#' histogram.
+#'
+#' When binning along the x axis and stacking along the y axis, the numbers on
+#' y axis are not meaningful, due to technical limitations of ggplot2. You can
+#' hide the y axis, as in one of the examples, or manually scale it
+#' to match the number of dots.
+#'
+#' @section Computed variables:
+#' \describe{
+#'   \item{x}{center of each bin, if binaxis is "x"}
+#'   \item{y}{center of each bin, if binaxis is "x"}
+#'   \item{binwidth}{max width of each bin if method is "dotdensity";
+#'     width of each bin if method is "histodot"}
+#'   \item{count}{number of points in bin}
+#'   \item{ncount}{count, scaled to maximum of 1}
+#'   \item{density}{density of points in bin, scaled to integrate to 1,
+#'     if method is "histodot"}
+#'   \item{ndensity}{density, scaled to maximum of 1, if method is "histodot"}
+#' }
+#'
+#' @inheritParams ggplot2::geom_dotplot
+#' @param stackdir Which direction to stack the dots. "up" (default) places the half-dotplot on the right side. "down" on the left side.
+#' @importFrom ggplot2 layer
+#' @export
+#' @references Wilkinson, L. (1999) Dot plots. The American Statistician,
+#'    53(3), 276-281.
 geom_half_dotplot <- function(
   mapping = NULL, data = NULL,
   position = "dodge",
   ...,
-  side = "r",
   binwidth = NULL,
   binaxis = "y",
   method = "dotdensity",
@@ -13,7 +49,7 @@ geom_half_dotplot <- function(
   stackgroups = FALSE,
   origin = NULL,
   right = TRUE,
-  width = 0.9,
+  width = NULL,
   drop = FALSE,
   na.rm = FALSE,
   show.legend = NA,
@@ -32,14 +68,13 @@ geom_half_dotplot <- function(
   layer(
     data = data,
     mapping = mapping,
-    stat = "half_bindot",
+    stat = StatHalfBindot,
     geom = GeomHalfDotplot,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     # Need to make sure that the binaxis goes to both the stat and the geom
     params = list(
-      side = side,
       binaxis = binaxis,
       binwidth = binwidth,
       binpositions = binpositions,
@@ -58,58 +93,14 @@ geom_half_dotplot <- function(
   )
 }
 
-#' @rdname ggplot2-ggproto
+#' @rdname gghalves-extensions
 #' @format NULL
 #' @usage NULL
+#' @importFrom ggplot2 ggproto GeomDotplot aes
 #' @export
 GeomHalfDotplot <- ggproto(
-  "GeomHalfDotplot", GeomBoxplot,
+  "GeomHalfDotplot", GeomDotplot,
   required_aes = c("x", "y"),
   non_missing_aes = c("size", "shape"),
-  
-  default_aes = aes(colour = "black", fill = "black", alpha = NA, stroke = 1, linetype = "solid"),
-  
-  setup_data = function(data, params) {
-    x_data    <- GeomBoxplot$setup_data(data, NULL)
-    data$bp_xmin <- x_data$xmin
-    data$bp_xmax <- x_data$xmax
-    GeomDotplot$setup_data(data, params)
-  },
-  
-  draw_group = function(
-    data, panel_params, coord, na.rm = FALSE,
-    binaxis = "x", stackdir = "up", stackratio = 1,
-    dotsize = 1, stackgroups = FALSE, side="r") {
-    if (!coord$is_linear()) {
-      warning("geom_dotplot does not work properly with non-linear coordinates.")
-    }
-    
-    data$xmin <- if (side == "l") data$bp_xmin else data$bp_xmin + (data$bp_xmax - data$bp_xmin) / 2
-    data$xmax <- if (side == "l") data$bp_xmin + (data$bp_xmax - data$bp_xmin) / 2 else data$bp_xmax
-    dddx[[length(dddx) + 1]] <<- data
-    tdata <- coord$transform(data, panel_params)
-    
-    # Swap axes if using coord_flip
-    if (inherits(coord, "CoordFlip"))
-      binaxis <- ifelse(binaxis == "x", "y", "x")
-      
-    if (binaxis == "x") {
-      stackaxis = "y"
-      dotdianpc <- dotsize * tdata$binwidth[1] / (max(panel_params$x.range) - min(panel_params$x.range))
-      
-    } else if (binaxis == "y") {
-      stackaxis = "x"
-      dotdianpc <- dotsize * tdata$binwidth[1] / (max(panel_params$y.range) - min(panel_params$y.range))
-    }
-    
-    ggplot2:::ggname("geom_dotplot",
-           ggplot2:::dotstackGrob(
-             stackaxis = stackaxis, x = tdata$x, y = tdata$y, dotdia = dotdianpc,
-             stackposition = tdata$stackpos, stackratio = stackratio,
-             default.units = "npc",
-             gp = gpar(col = alpha(tdata$colour, tdata$alpha),
-                       fill = alpha(tdata$fill, tdata$alpha),
-                       lwd = tdata$stroke, lty = tdata$linetype))
-    )
-  }
+  default_aes = aes(colour = "black", fill = "black", alpha = NA, stroke = 1, linetype = "solid")
 )

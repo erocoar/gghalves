@@ -1,12 +1,11 @@
 #' A half boxplot
 #'
 #' @inheritParams ggplot2::geom_boxplot
-#' 
-#' @param errorbar.draw Draw horizontal whiskers at the top and bottom (the IQR). Defaults to `FALSE`.
-#' 
+#' @param errorbar.draw Draw horizontal whiskers at the top and bottom (the IQR). Defaults to `TRUE`.
 #' @param errorbar.length Length of the horizontal whiskers (errorbar). Defaults to half the width of the half-boxplot.
-#' 
-#' @importFrom ggplot2 layer position_dodge2 new_data_frame aes
+#' @param boxplot.center Whether to center the half-boxplot instead of aligning it to its respective side.
+#' @importFrom ggplot2 layer position_dodge2 aes GeomSegment GeomCrossbar
+#' @importFrom grid grobTree grobName
 #' @export
 #' @examples
 #' set.seed(221)
@@ -33,7 +32,7 @@ geom_half_boxplot <- function(
   notch = FALSE,
   notchwidth = 0.5,
   varwidth = FALSE,
-  errorbar.draw = FALSE,
+  errorbar.draw = TRUE,
   errorbar.length = 0.5,
   na.rm = FALSE,
   show.legend = NA,
@@ -75,7 +74,7 @@ geom_half_boxplot <- function(
   )
 }
 
-#' @rdname ggpol-extensions
+#' @rdname gghalves-extensions
 #' @format NULL
 #' @usage NULL
 #' @importFrom ggplot2 alpha ggproto GeomBoxplot aes GeomSegment GeomPoint GeomCrossbar resolution PositionJitter
@@ -92,11 +91,9 @@ GeomHalfBoxplot <- ggproto("GeomHalfBoxplot", GeomBoxplot,
     outlier.colour = NULL, outlier.fill = NULL,
     outlier.shape = 19, outlier.size = 1.5, 
     outlier.stroke = 0.5, outlier.alpha = NULL,
-    jitter.position = ggplot2::PositionJitter,
-    jitter.params = list("width" = NULL, "height" = NULL),
     notch = FALSE, notchwidth = 0.5, 
     varwidth = FALSE, errorbar.draw = FALSE, errorbar.length = 0.5) {
-    
+
     if (nrow(data) != 1) {
       stop(
         "Can't draw more than one boxplot per group. Did you forget aes(group = ...)?",
@@ -160,7 +157,6 @@ GeomHalfBoxplot <- ggproto("GeomHalfBoxplot", GeomBoxplot,
       stringsAsFactors = FALSE
       )
     
-    bb <<- box
     if (!is.null(data$outliers) && length(data$outliers[[1]] >= 1)) {
       outliers <- ggplot2:::new_data_frame(list(
         y = data$outliers[[1]],

@@ -92,9 +92,15 @@ GeomHalfPoint <- ggproto(
     )
 
     if (length(unique(trans_positions$x)) > 1L) {
-      trans_positions$x <- (data$xmax- data$x) * (
-        trans_positions$x - min(trans_positions$x)) / (
-          max(trans_positions$x) - min(trans_positions$x)) + data$x - 0.045
+      if (side == "r") {
+        trans_positions$x <- (data$xmax - data$x) * (
+          trans_positions$x - min(trans_positions$x)) / (
+            max(trans_positions$x) - min(trans_positions$x)) + data$x #- 0.045
+      } else {
+        trans_positions$x <- (data$x - data$xmin) * (
+          trans_positions$x - min(trans_positions$x)) / (
+            max(trans_positions$x) - min(trans_positions$x)) + data$x #+ 0.045
+      }
     } #TODO parameterize left-shift
       
 

@@ -19,6 +19,8 @@ devtools::install_github('erocoar/gghalves')
 
 All of them have a `side` argument that can be either `l` for left or `r` for right half. As a special case there is also `geom_half_dotplot` to support half dotplots that dodge aesthetics such as `fill` and `colour`. 
 
+`gghalves` also works well with other `ggplot2` geoms and extensions such as `geom_dotplot` and `ggbeeswarm::geom_beeswarm`.
+
 ![Features](https://i.imgur.com/7APxx1t.png)
 
 ### Roadmap

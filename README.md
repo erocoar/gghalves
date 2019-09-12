@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/erocoar/gghalves.svg?branch=master)](https://travis-ci.org/erocoar/gghalves)
+[![CRAN_Release_Badge](http://www.r-pkg.org/badges/version-ago/gghalves)](https://CRAN.R-project.org/package=gghalves)
+[![CRAN_Download_Badge](http://cranlogs.r-pkg.org/badges/grand-total/gghalves)](https://CRAN.R-project.org/package=gghalves)
+
 ### About
 `gghalves` makes it easy to compose your own `half-half` plots via `ggplot2`. Think displaying a boxplot next to jittered points, or violin plots side by side with dotplots. 
 

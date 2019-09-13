@@ -27,5 +27,4 @@ Collate:
     'stat-half-bindot.R'
     'stat-half-point.R'
     'stat-half-ydensity.R'
-    'geom_tshighlight.R'
     'ggproto-classes.R'

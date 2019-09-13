@@ -2,26 +2,18 @@
 #'
 #' @inheritParams ggplot2::geom_boxplot
 #' @param errorbar.draw Draw horizontal whiskers at the top and bottom (the IQR). Defaults to `TRUE`.
-#' @param errorbar.length Length of the horizontal whiskers (errorbar). Defaults to half the width of the half-boxplot.
+#' @param errorbar.length Length of the horizontal whiskers (errorbar). Defaults to half the width of the half-boxplot
+#' @param side The side of the half-geom, "l" for left and "r" for right, defaults to "l".
 #' @param boxplot.center Whether to center the half-boxplot instead of aligning it to its respective side.
 #' @importFrom ggplot2 layer position_dodge2 aes GeomSegment GeomCrossbar
 #' @importFrom grid grobTree grobName
 #' @export
-#' @examples
-#' set.seed(221)
-#' df <- data.frame(score = rgamma(150, 4, 1), 
-#'                  gender = sample(c("M", "F"), 150, replace = TRUE), 
-#'                  genotype = factor(sample(1:3, 150, replace = TRUE)))
-#' 
-#' ggplot(df) + geom_boxjitter(aes(x = gender, y = score, fill = genotype),
-#'                             errorbar.draw = TRUE) +
-#'   scale_fill_manual(values = c("#CF3721", "#31A9B8", "#258039")) +
-#'   theme_minimal()
 geom_half_boxplot <- function(
   mapping = NULL, data = NULL,
   stat = "boxplot", position = "dodge2",
   ...,
   side = "l",
+  boxplot.center = FALSE,
   outlier.colour = NULL,
   outlier.color = NULL,
   outlier.fill = NULL,
@@ -57,6 +49,7 @@ geom_half_boxplot <- function(
     inherit.aes = inherit.aes,
     params = list(
       side = side,
+      boxplot.center = boxplot.center,
       outlier.colour = outlier.color %||% outlier.colour,
       outlier.fill = outlier.fill,
       outlier.shape = outlier.shape,

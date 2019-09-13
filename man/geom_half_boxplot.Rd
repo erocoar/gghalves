@@ -5,12 +5,12 @@
 \title{A half boxplot}
 \usage{
 geom_half_boxplot(mapping = NULL, data = NULL, stat = "boxplot",
-  position = "dodge2", ..., side = "l", outlier.colour = NULL,
-  outlier.color = NULL, outlier.fill = NULL, outlier.shape = 19,
-  outlier.size = 1.5, outlier.stroke = 0.5, outlier.alpha = NULL,
-  notch = FALSE, notchwidth = 0.5, varwidth = FALSE,
-  errorbar.draw = TRUE, errorbar.length = 0.5, na.rm = FALSE,
-  show.legend = NA, inherit.aes = TRUE)
+  position = "dodge2", ..., side = "l", boxplot.center = FALSE,
+  outlier.colour = NULL, outlier.color = NULL, outlier.fill = NULL,
+  outlier.shape = 19, outlier.size = 1.5, outlier.stroke = 0.5,
+  outlier.alpha = NULL, notch = FALSE, notchwidth = 0.5,
+  varwidth = FALSE, errorbar.draw = TRUE, errorbar.length = 0.5,
+  na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link[=aes]{aes()}} or
@@ -43,6 +43,10 @@ a call to a position adjustment function.}
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{colour = "red"} or \code{size = 3}. They may also be parameters
 to the paired geom/stat.}
+
+\item{side}{The side of the half-geom, "l" for left and "r" for right, defaults to "l".}
+
+\item{boxplot.center}{Whether to center the half-boxplot instead of aligning it to its respective side.}
 
 \item{outlier.colour}{Default aesthetics for outliers. Set to \code{NULL} to inherit from the
 aesthetics used for the box.
@@ -143,7 +147,7 @@ weighted, using the \code{weight} aesthetic).}
 
 \item{errorbar.draw}{Draw horizontal whiskers at the top and bottom (the IQR). Defaults to `TRUE`.}
 
-\item{errorbar.length}{Length of the horizontal whiskers (errorbar). Defaults to half the width of the half-boxplot.}
+\item{errorbar.length}{Length of the horizontal whiskers (errorbar). Defaults to half the width of the half-boxplot}
 
 \item{na.rm}{If \code{FALSE}, the default, missing values are removed with
 a warning. If \code{TRUE}, missing values are silently removed.}
@@ -158,20 +162,7 @@ display.}
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link[=borders]{borders()}}.}
-
-\item{boxplot.center}{Whether to center the half-boxplot instead of aligning it to its respective side.}
 }
 \description{
 A half boxplot
-}
-\examples{
-set.seed(221)
-df <- data.frame(score = rgamma(150, 4, 1), 
-                 gender = sample(c("M", "F"), 150, replace = TRUE), 
-                 genotype = factor(sample(1:3, 150, replace = TRUE)))
-
-ggplot(df) + geom_boxjitter(aes(x = gender, y = score, fill = genotype),
-                            errorbar.draw = TRUE) +
-  scale_fill_manual(values = c("#CF3721", "#31A9B8", "#258039")) +
-  theme_minimal()
 }

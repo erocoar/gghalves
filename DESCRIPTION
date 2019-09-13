@@ -19,3 +19,13 @@ Suggests:
 	knitr,
     	rmarkdown
 Collate: 
+    'utilities.R'
+    'geom-half-dotplot.R'
+    'geom_half_boxplot.R'
+    'geom_half_point.R'
+    'geom_half_violin.R'
+    'stat-half-bindot.R'
+    'stat-half-point.R'
+    'stat-half-ydensity.R'
+    'geom_tshighlight.R'
+    'ggproto-classes.R'

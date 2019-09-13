@@ -20,7 +20,7 @@ Suggests:
     	rmarkdown
 Collate: 
     'utilities.R'
-    'geom-half-dotplot.R'
+    'geom_half_dotplot.R'
     'geom_half_boxplot.R'
     'geom_half_point.R'
     'geom_half_violin.R'

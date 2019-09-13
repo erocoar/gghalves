@@ -5,6 +5,12 @@
 #' @param transformation A `Position` object to calculate the transformation of the points. Defaults to `ggplot2::PositionJitter`.
 #' @param transformation_params A `list` containing named parameter values for the `transformation` object. Defaults to `list(width = NULL, height = NULL)`. For `ggplot2::PositionJitter`, keyword arguments can be `width`, `height` and `seed`.
 #' @importFrom ggplot2 layer
+#' @examples 
+#' ggplot(iris, aes(x = Species, y = Petal.Width, fill = Species)) + 
+#'   geom_half_point()
+#'   
+#' ggplot(iris, aes(x = Species, y = Petal.Width, fill = Species)) + 
+#'   geom_half_point(side = "l")
 #' @export
 geom_half_point <- function(
   mapping = NULL, data = NULL,
@@ -101,7 +107,7 @@ GeomHalfPoint <- ggproto(
           trans_positions$x - min(trans_positions$x)) / (
             max(trans_positions$x) - min(trans_positions$x)) + data$x #+ 0.045
       }
-    } #TODO parameterize left-shift
+    } #TODO parameterize left/right-shift
       
 
     point_df <- data.frame(

@@ -166,3 +166,13 @@ the default plot specification, e.g. \code{\link[=borders]{borders()}}.}
 \description{
 A half boxplot
 }
+\examples{
+ggplot(iris, aes(x = Species, y = Petal.Width, fill = Species)) + 
+  geom_half_boxplot() 
+  
+ggplot(iris, aes(x = Species, y = Petal.Width, fill = Species)) + 
+  geom_half_boxplot(side = "r") 
+  
+ggplot(iris, aes(x = Species, y = Petal.Width, fill = Species)) + 
+  geom_half_boxplot(center = TRUE) 
+}

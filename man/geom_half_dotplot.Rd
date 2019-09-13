@@ -122,6 +122,10 @@ to match the number of dots.
 }
 }
 
+\examples{
+ggplot(iris, aes(x = Species, y = Petal.Width, fill = Species)) + 
+  geom_half_dotplot(stackratio = .5, method = "histodot") 
+}
 \references{
 Wilkinson, L. (1999) Dot plots. The American Statistician,
    53(3), 276-281.

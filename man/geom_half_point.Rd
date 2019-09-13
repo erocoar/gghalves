@@ -65,3 +65,10 @@ the default plot specification, e.g. \code{\link[=borders]{borders()}}.}
 \description{
 Points with jitter for half geoms.
 }
+\examples{
+ggplot(iris, aes(x = Species, y = Petal.Width, fill = Species)) + 
+  geom_half_point()
+  
+ggplot(iris, aes(x = Species, y = Petal.Width, fill = Species)) + 
+  geom_half_point(side = "l")
+}

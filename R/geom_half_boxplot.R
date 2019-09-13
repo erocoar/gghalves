@@ -7,6 +7,15 @@
 #' @param center Boolean whether to center the half-boxplot instead of aligning it to its respective side.
 #' @importFrom ggplot2 layer position_dodge2 aes GeomSegment GeomCrossbar
 #' @importFrom grid grobTree grobName
+#' @examples 
+#' ggplot(iris, aes(x = Species, y = Petal.Width, fill = Species)) + 
+#'   geom_half_boxplot() 
+#'   
+#' ggplot(iris, aes(x = Species, y = Petal.Width, fill = Species)) + 
+#'   geom_half_boxplot(side = "r") 
+#'   
+#' ggplot(iris, aes(x = Species, y = Petal.Width, fill = Species)) + 
+#'   geom_half_boxplot(center = TRUE) 
 #' @export
 geom_half_boxplot <- function(
   mapping = NULL, data = NULL,

@@ -93,6 +93,13 @@ blend of [geom_boxplot()] and [geom_density()]: a
 violin plot is a mirrored density plot displayed in the same way as a
 boxplot.
 }
+\examples{
+ggplot(iris, aes(x = Species, y = Petal.Width, fill = Species)) + 
+  geom_half_violin()
+  
+ggplot(iris, aes(x = Species, y = Petal.Width, fill = Species)) + 
+  geom_half_violin(side = "r")
+}
 \references{
 Hintze, J. L., Nelson, R. D. (1998) Violin Plots: A Box
 Plot-Density Trace Synergism. The American Statistician 52, 181-184.

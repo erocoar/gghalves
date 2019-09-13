@@ -32,6 +32,9 @@
 #' @inheritParams ggplot2::geom_dotplot
 #' @param stackdir Which direction to stack the dots. "up" (default) places the half-dotplot on the right side. "down" on the left side.
 #' @importFrom ggplot2 layer
+#' @examples
+#' ggplot(iris, aes(x = Species, y = Petal.Width, fill = Species)) + 
+#'   geom_half_dotplot(stackratio = .5, method = "histodot") 
 #' @export
 #' @references Wilkinson, L. (1999) Dot plots. The American Statistician,
 #'    53(3), 276-281.

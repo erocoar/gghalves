@@ -8,6 +8,12 @@
 #' @inheritParams ggplot2::geom_violin
 #' @param side The side on which to draw the half violin plot. "l" for left, "r" for right, defaults to "l".
 #' @importFrom ggplot2 layer
+#' @examples 
+#' ggplot(iris, aes(x = Species, y = Petal.Width, fill = Species)) + 
+#'   geom_half_violin()
+#'   
+#' ggplot(iris, aes(x = Species, y = Petal.Width, fill = Species)) + 
+#'   geom_half_violin(side = "r")
 #' @export
 #' @references Hintze, J. L., Nelson, R. D. (1998) Violin Plots: A Box
 #' Plot-Density Trace Synergism. The American Statistician 52, 181-184.

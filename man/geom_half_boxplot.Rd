@@ -5,7 +5,7 @@
 \title{A half boxplot}
 \usage{
 geom_half_boxplot(mapping = NULL, data = NULL, stat = "boxplot",
-  position = "dodge2", ..., side = "l", boxplot.center = FALSE,
+  position = "dodge2", ..., side = "l", center = FALSE,
   outlier.colour = NULL, outlier.color = NULL, outlier.fill = NULL,
   outlier.shape = 19, outlier.size = 1.5, outlier.stroke = 0.5,
   outlier.alpha = NULL, notch = FALSE, notchwidth = 0.5,
@@ -46,7 +46,7 @@ to the paired geom/stat.}
 
 \item{side}{The side of the half-geom, "l" for left and "r" for right, defaults to "l".}
 
-\item{boxplot.center}{Whether to center the half-boxplot instead of aligning it to its respective side.}
+\item{center}{Boolean whether to center the half-boxplot instead of aligning it to its respective side.}
 
 \item{outlier.colour}{Default aesthetics for outliers. Set to \code{NULL} to inherit from the
 aesthetics used for the box.

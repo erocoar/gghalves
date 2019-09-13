@@ -4,7 +4,7 @@
 #' @param errorbar.draw Draw horizontal whiskers at the top and bottom (the IQR). Defaults to `TRUE`.
 #' @param errorbar.length Length of the horizontal whiskers (errorbar). Defaults to half the width of the half-boxplot
 #' @param side The side of the half-geom, "l" for left and "r" for right, defaults to "l".
-#' @param boxplot.center Whether to center the half-boxplot instead of aligning it to its respective side.
+#' @param center Boolean whether to center the half-boxplot instead of aligning it to its respective side.
 #' @importFrom ggplot2 layer position_dodge2 aes GeomSegment GeomCrossbar
 #' @importFrom grid grobTree grobName
 #' @export
@@ -13,7 +13,7 @@ geom_half_boxplot <- function(
   stat = "boxplot", position = "dodge2",
   ...,
   side = "l",
-  boxplot.center = FALSE,
+  center = FALSE,
   outlier.colour = NULL,
   outlier.color = NULL,
   outlier.fill = NULL,
@@ -49,7 +49,7 @@ geom_half_boxplot <- function(
     inherit.aes = inherit.aes,
     params = list(
       side = side,
-      boxplot.center = boxplot.center,
+      center = center,
       outlier.colour = outlier.color %||% outlier.colour,
       outlier.fill = outlier.fill,
       outlier.shape = outlier.shape,
@@ -80,13 +80,13 @@ GeomHalfBoxplot <- ggproto("GeomHalfBoxplot", GeomBoxplot,
                            
   draw_group = function(
     data, panel_params, coord, fatten = 2,
-    side = "l",
+    side = "l", center = FALSE,
     outlier.colour = NULL, outlier.fill = NULL,
     outlier.shape = 19, outlier.size = 1.5, 
     outlier.stroke = 0.5, outlier.alpha = NULL,
     notch = FALSE, notchwidth = 0.5, 
     varwidth = FALSE, errorbar.draw = FALSE, errorbar.length = 0.5) {
-
+    
     if (nrow(data) != 1) {
       stop(
         "Can't draw more than one boxplot per group. Did you forget aes(group = ...)?",
@@ -95,6 +95,7 @@ GeomHalfBoxplot <- ggproto("GeomHalfBoxplot", GeomBoxplot,
     }
     
     xrange <- data$xmax - data$xmin
+    
     common <- data.frame(
       colour = data$colour,
       size = data$size,
@@ -113,28 +114,47 @@ GeomHalfBoxplot <- ggproto("GeomHalfBoxplot", GeomBoxplot,
        common,
        stringsAsFactors = FALSE
     )
-                           
-  if (errorbar.draw) {
-    if (errorbar.length > 1 | errorbar.length < 0) {
-      stop("Error bar length must be between 0 and 1.")
+    
+    # If Boxplot is centered, need to adjust whisker that is otherwise always at x
+    if (isTRUE(center)) {
+      if (side == "r") {
+        whiskers$x <- data$x + xrange / 4 
+      } else {
+        whiskers$x <- data$x - xrange / 4
+      }
+      whiskers$xend <- whiskers$x
     }
-    error_length_add <- ((data$xmin + xrange / 2) - data$xmin)
-    error_length_add <- error_length_add * (1 - errorbar.length)
-
-    error_whiskers <- data.frame(
-      x = (data$xmin + xrange / 2),
-      xend = if (side == "r") data$xmax - error_length_add else data$xmin + error_length_add,
-      y = c(data$ymax, data$ymin),
-      yend = c(data$ymax, data$ymin),
-      alpha = NA,
-      common,
-      stringsAsFactors = FALSE
-      )
-                             
-    error_grob <- GeomSegment$draw_panel(error_whiskers, panel_params, coord)
-    } else {
-      error_grob <- NULL
-    }
+    
+    if (errorbar.draw) {
+      if (errorbar.length > 1 | errorbar.length < 0) {
+        stop("Error bar length must be between 0 and 1.")
+      }
+      error_length_add <- ((data$xmin + xrange / 2) - data$xmin)
+      error_length_add <- error_length_add * (1 - errorbar.length)
+  
+      error_whiskers <- data.frame(
+        x = (data$xmin + xrange / 2),
+        xend = if (side == "r") data$xmax - error_length_add else data$xmin + error_length_add,
+        y = c(data$ymax, data$ymin),
+        yend = c(data$ymax, data$ymin),
+        alpha = NA,
+        common,
+        stringsAsFactors = FALSE
+        )
+      
+      if (isTRUE(center)) {
+        error_whiskers$x <- data$x
+        if (side == "r") {
+          error_whiskers$xend <- data$xmax
+        } else {
+          error_whiskers$xend <- data$xmin
+        }
+      }
+                               
+      error_grob <- GeomSegment$draw_panel(error_whiskers, panel_params, coord)
+      } else {
+        error_grob <- NULL
+      }
     
     box <- data.frame(
       xmin = if (side == "r") data$xmax else data$xmin,
@@ -162,6 +182,14 @@ GeomHalfBoxplot <- ggproto("GeomHalfBoxplot", GeomBoxplot,
         fill = NA,
         alpha = outlier.alpha %||% data$alpha[1]
       ), n = length(data$outliers[[1]]))
+      
+      if (isTRUE(center)) {
+        if (side == "r") {
+          outliers$x <- outliers$x + xrange / 4
+        } else {
+          outliers$x <- outliers$x - xrange / 4
+        }
+      }
       outliers_grob <- GeomPoint$draw_panel(outliers, panel_params, coord)
     } else {
       outliers_grob <- NULL

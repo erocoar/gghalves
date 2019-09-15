@@ -1,5 +1,5 @@
 Package: gghalves
-Title: Compose Half-half Plots Using Your Favourite Geoms
+Title: Compose Half-Half Plots Using Your Favourite Geoms
 Version: 0.0.1
 Authors@R: person("Frederik", "Tiedemann", email = "fj.tiedemann@googlemail.com", role = c("aut", "cre"))
 Description: A 'ggplot2' extension for easy plotting of half-half geom combinations. Think half boxplot and half jitterplot, or half violinplot and half dotplot.

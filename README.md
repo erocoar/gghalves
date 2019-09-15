@@ -16,7 +16,7 @@ devtools::install_github('erocoar/gghalves')
 ```
 
 ### Features
-`gghalves` adds `_half` extensions to selected `geom`s:
+`gghalves` adds `_half_` extensions to selected `geom`s:
 - `geom_half_boxplot`
 - `geom_half_violin`
 - `geom_half_point`

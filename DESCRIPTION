@@ -28,3 +28,4 @@ Collate:
     'stat-half-point.R'
     'stat-half-ydensity.R'
     'ggproto-classes.R'
+VignetteBuilder: knitr

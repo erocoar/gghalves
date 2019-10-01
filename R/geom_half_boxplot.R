@@ -61,6 +61,7 @@ geom_half_boxplot <- function(
     params = list(
       side = side,
       center = center,
+      nudge = nudge,
       outlier.colour = outlier.color %||% outlier.colour,
       outlier.fill = outlier.fill,
       outlier.shape = outlier.shape,
@@ -91,7 +92,7 @@ GeomHalfBoxplot <- ggproto("GeomHalfBoxplot", GeomBoxplot,
                            
   draw_group = function(
     data, panel_params, coord, fatten = 2,
-    side = "l", center = FALSE,
+    side = "l", center = FALSE, nudge = nudge,
     outlier.colour = NULL, outlier.fill = NULL,
     outlier.shape = 19, outlier.size = 1.5, 
     outlier.stroke = 0.5, outlier.alpha = NULL,
@@ -126,12 +127,22 @@ GeomHalfBoxplot <- ggproto("GeomHalfBoxplot", GeomBoxplot,
        stringsAsFactors = FALSE
     )
     
-    # If Boxplot is centered, need to adjust whisker that is otherwise always at x
+    # Adjust whisker position based on nudge (extra spacing between geom and middle)
+    # If side == right, move whisker to right and vice versa
+    if (side == "r") {
+      whiskers$x <- whiskers$x + nudge
+    } else {
+      whiskers$x <- whiskers$x - nudge
+    }
+    whiskers$xend <- whiskers$x
+    
+    # If boxplot is centered, need to adjust whisker that is otherwise always at x
+    # If boxplot is centered, only half of nudge value is added s.t. it remains centered
     if (isTRUE(center)) {
       if (side == "r") {
-        whiskers$x <- data$x + xrange / 4 
+        whiskers$x <- data$x + xrange / 4 + nudge / 2
       } else {
-        whiskers$x <- data$x - xrange / 4
+        whiskers$x <- data$x - xrange / 4 - nudge / 2
       }
       whiskers$xend <- whiskers$x
     }
@@ -140,11 +151,11 @@ GeomHalfBoxplot <- ggproto("GeomHalfBoxplot", GeomBoxplot,
       if (errorbar.length > 1 | errorbar.length < 0) {
         stop("Error bar length must be between 0 and 1.")
       }
-      error_length_add <- ((data$xmin + xrange / 2) - data$xmin)
+      error_length_add <- xrange / 2 #((data$xmin + xrange / 2) - data$xmin)
       error_length_add <- error_length_add * (1 - errorbar.length)
   
       error_whiskers <- data.frame(
-        x = (data$xmin + xrange / 2),
+        x = if (side == "r") (data$xmin + xrange / 2) + nudge else (data$xmin + xrange / 2) - nudge ,
         xend = if (side == "r") data$xmax - error_length_add else data$xmin + error_length_add,
         y = c(data$ymax, data$ymin),
         yend = c(data$ymax, data$ymin),
@@ -169,7 +180,7 @@ GeomHalfBoxplot <- ggproto("GeomHalfBoxplot", GeomBoxplot,
     
     box <- data.frame(
       xmin = if (side == "r") data$xmax else data$xmin,
-      xmax = (data$xmin + xrange / 2),
+      xmax = (data$xmin + xrange / 2) + switch((side == "r") + 1, nudge * -1, nudge),
       ymin = data$lower,
       y = data$middle,
       ymax = data$upper,
@@ -184,7 +195,7 @@ GeomHalfBoxplot <- ggproto("GeomHalfBoxplot", GeomBoxplot,
     if (!is.null(data$outliers) && length(data$outliers[[1]] >= 1)) {
       outliers <- ggplot2:::new_data_frame(list(
         y = data$outliers[[1]],
-        x = data$x[1],
+        x = data$x[1] + switch((side == "r") + 1, nudge * -1, nudge),
         colour = outlier.colour %||% data$colour[1],
         fill = outlier.fill %||% data$fill[1],
         shape = outlier.shape %||% data$shape[1],

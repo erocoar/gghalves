@@ -7,6 +7,7 @@
 #'
 #' @inheritParams ggplot2::geom_violin
 #' @param side The side on which to draw the half violin plot. "l" for left, "r" for right, defaults to "l".
+#' @param nudge Add space between the violinplot and the middle of the space allotted to a given factor on the x-axis.
 #' @importFrom ggplot2 layer
 #' @examples 
 #' ggplot(iris, aes(x = Species, y = Petal.Width, fill = Species)) + 
@@ -22,6 +23,7 @@ geom_half_violin <- function(
   stat = "half_ydensity", position = "dodge",
   ...,
   side = "l",
+  nudge = 0,
   draw_quantiles = NULL,
   trim = TRUE,
   scale = "area",
@@ -38,6 +40,7 @@ geom_half_violin <- function(
     inherit.aes = inherit.aes,
     params = list(
       side = side,
+      nudge = nudge,
       trim = trim,
       scale = scale,
       draw_quantiles = draw_quantiles,
@@ -62,18 +65,18 @@ GeomHalfViolin <- ggproto(
     data
   },
 
-  draw_group = function(self, data, side = "l", ..., draw_quantiles = NULL) {
+  draw_group = function(self, data, side = "l", nudge = 0, ..., draw_quantiles = NULL) {
     # Find the points for the line to go all the way around
     if (side == "l") {
       data <- transform(
         data,
         xminv = x + violinwidth * (xmin - x),
-        xmaxv = x
+        xmaxv = x - nudge
         )
     } else {
       data <- transform(
         data,
-        xminv = x,
+        xminv = x + nudge,
         xmaxv = x + violinwidth * (xmax - x)
       )
     }

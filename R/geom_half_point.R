@@ -92,10 +92,17 @@ GeomHalfPoint <- ggproto(
         ggplot2::resolution(data$point_y[[1]], zero = FALSE) * 0.4
     }
 
-    trans_positions <- transformation$compute_layer(
-      transformation_df,
-      transformation_params
-    )
+    if (is(transformation, "PositionIdentity") || is(transformation, "PositionJitter")) {
+      trans_positions <- transformation$compute_layer(
+        transformation_df,
+        transformation_params
+      )
+    } else {
+      trans_positions <- transformation$compute_panel(
+        transformation_df,
+        transformation_params
+      )
+    }
 
     if (length(unique(trans_positions$x)) > 1L) {
       if (side == "r") {

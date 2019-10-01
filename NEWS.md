@@ -1,3 +1,8 @@
+# gghalves 0.0.2
+
+## Minor changes
+- `geom_half_point` now supports passing of positions other than `PositionJitter` and `PositionIdentity` to `transformation` - given they have a `compute_panel` function.
+
 # gghalves 0.0.1
 
 ## Major changes

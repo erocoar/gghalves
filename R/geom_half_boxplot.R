@@ -5,6 +5,7 @@
 #' @param errorbar.length Length of the horizontal whiskers (errorbar). Defaults to half the width of the half-boxplot
 #' @param side The side of the half-geom, "l" for left and "r" for right, defaults to "l".
 #' @param center Boolean whether to center the half-boxplot instead of aligning it to its respective side.
+#' @param nudge Add space between the boxplot and the middle of the space allotted to a given factor on the x-axis.
 #' @importFrom ggplot2 layer position_dodge2 aes GeomSegment GeomCrossbar
 #' @importFrom grid grobTree grobName
 #' @examples 
@@ -23,6 +24,7 @@ geom_half_boxplot <- function(
   ...,
   side = "l",
   center = FALSE,
+  nudge = 0,
   outlier.colour = NULL,
   outlier.color = NULL,
   outlier.fill = NULL,

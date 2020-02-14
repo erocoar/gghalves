@@ -4,6 +4,7 @@
 #' @param side The side on which to draw the half violin plot. "l" for left, "r" for right, defaults to "l".
 #' @param transformation A `Position` object to calculate the transformation of the points. Defaults to `ggplot2::PositionJitter`.
 #' @param transformation_params A `list` containing named parameter values for the `transformation` object. Defaults to `list(width = NULL, height = NULL)`. For `ggplot2::PositionJitter`, keyword arguments can be `width`, `height` and `seed`.
+#' @param range_scale If no `width` argument is specified in `transformation_params`, `range_scale` is used to determine the width of the jitter. Defaults to `8`, which is half of the allotted space for the jitter-points, whereas `4` would use all of the allotted space.
 #' @importFrom ggplot2 layer
 #' @examples 
 #' ggplot(iris, aes(x = Species, y = Petal.Width, fill = Species)) + 
@@ -19,6 +20,7 @@ geom_half_point <- function(
   side = "r",
   transformation = PositionJitter,
   transformation_params = list(width = NULL, height = NULL),
+  range_scale = 8,
   na.rm = FALSE,
   show.legend = NA,
   inherit.aes = TRUE) {
@@ -34,6 +36,7 @@ geom_half_point <- function(
         side = side,
         transformation = transformation,
         transformation_params = transformation_params,
+        range_scale = range_scale,
         na.rm = na.rm,
         ...
       )
@@ -69,7 +72,8 @@ GeomHalfPoint <- ggproto(
   draw_group = function(
     data, panel_params, coord, na.rm = FALSE, side = "r", 
     transformation = PositionJitter,
-    transformation_params = list(width = NULL, height = NULL)) {
+    transformation_params = list(width = NULL, height = NULL),
+    range_scale = 8) {
     if (is.character(data$shape)) {
       data$shape <- translate_shape_string(data$shape)
     }
@@ -85,9 +89,9 @@ GeomHalfPoint <- ggproto(
       PANEL = 1,
       group = -1
     )
-    
+
     if (is(transformation, "PositionJitter")) {
-      transformation_params$width  <- transformation_params$width %||% xrange / 8
+      transformation_params$width  <- transformation_params$width %||% xrange / range_scale
       transformation_params$height <- transformation_params$height %||% 
         ggplot2::resolution(data$point_y[[1]], zero = FALSE) * 0.4
     }
@@ -104,17 +108,17 @@ GeomHalfPoint <- ggproto(
       )
     }
 
-    if (length(unique(trans_positions$x)) > 1L) {
-      if (side == "r") {
-        trans_positions$x <- (data$xmax - data$x) * (
-          trans_positions$x - min(trans_positions$x)) / (
-            max(trans_positions$x) - min(trans_positions$x)) + data$x #- 0.045
-      } else {
-        trans_positions$x <- (data$x - data$xmin) * (
-          trans_positions$x - min(trans_positions$x)) / (
-            max(trans_positions$x) - min(trans_positions$x)) + data$x #+ 0.045
-      }
-    } #TODO parameterize left/right-shift
+    # if (length(unique(trans_positions$x)) > 1L) {
+    #   if (side == "r") {
+    #     trans_positions$x <- (data$xmax - data$x) * (
+    #       trans_positions$x - min(trans_positions$x)) / (
+    #         max(trans_positions$x) - min(trans_positions$x)) + data$x #- 0.045
+    #   } else {
+    #     trans_positions$x <- (data$x - data$xmin) * (
+    #       trans_positions$x - min(trans_positions$x)) / (
+    #         max(trans_positions$x) - min(trans_positions$x)) + data$xmin #+ 0.045
+    #   }
+    # } #TODO parameterize left/right-shift
       
 
     point_df <- data.frame(

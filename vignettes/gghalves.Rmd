@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 library(gghalves)
-install.packages("dplyr")
+install.packages("dplyr", repos = "http://cran.us.r-project.org")
 library(dplyr)
 devtools::install_github("eclarke/ggbeeswarm", force = TRUE)
 library(ggbeeswarm)

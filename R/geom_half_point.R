@@ -4,7 +4,7 @@
 #' @param side The side on which to draw the half violin plot. "l" for left, "r" for right, defaults to "l".
 #' @param transformation A `Position` object to calculate the transformation of the points. Defaults to `ggplot2::PositionJitter`.
 #' @param transformation_params A `list` containing named parameter values for the `transformation` object. Defaults to `list(width = NULL, height = NULL)`. For `ggplot2::PositionJitter`, keyword arguments can be `width`, `height` and `seed`.
-#' @param range_scale If no `width` argument is specified in `transformation_params`, `range_scale` is used to determine the width of the jitter. Defaults to `8`, which is half of the allotted space for the jitter-points, whereas `4` would use all of the allotted space.
+#' @param range_scale If no `width` argument is specified in `transformation_params`, `range_scale` is used to determine the width of the jitter. Defaults to `0.5`, which is half of the allotted space for the jitter-points, whereas `1` would use all of the allotted space.
 #' @importFrom ggplot2 layer
 #' @examples 
 #' ggplot(iris, aes(x = Species, y = Petal.Width, fill = Species)) + 
@@ -20,7 +20,7 @@ geom_half_point <- function(
   side = "r",
   transformation = PositionJitter,
   transformation_params = list(width = NULL, height = NULL),
-  range_scale = 8,
+  range_scale = 2,
   na.rm = FALSE,
   show.legend = NA,
   inherit.aes = TRUE) {
@@ -73,7 +73,7 @@ GeomHalfPoint <- ggproto(
     data, panel_params, coord, na.rm = FALSE, side = "r", 
     transformation = PositionJitter,
     transformation_params = list(width = NULL, height = NULL),
-    range_scale = 8) {
+    range_scale = 2) {
     if (is.character(data$shape)) {
       data$shape <- translate_shape_string(data$shape)
     }
@@ -91,7 +91,7 @@ GeomHalfPoint <- ggproto(
     )
 
     if (is(transformation, "PositionJitter")) {
-      transformation_params$width  <- transformation_params$width %||% xrange / range_scale
+      transformation_params$width  <- transformation_params$width %||% xrange / (4 / range_scale)
       transformation_params$height <- transformation_params$height %||% 
         ggplot2::resolution(data$point_y[[1]], zero = FALSE) * 0.4
     }

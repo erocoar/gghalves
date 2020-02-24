@@ -40,7 +40,7 @@ StatHalfPoint <- ggproto(
     df$point_fill   <- list(data$fill)
     df$point_alpha  <- list(data$alpha)
     df$point_stroke <- list(data$stroke)
-    df$y            <- df$x
+    df$y            <- df$ymax
     df
   }
 )

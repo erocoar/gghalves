@@ -7,6 +7,7 @@
 
 ## Bug Fixes
 - removed range scaling of `geom_half_point` after points were already jittered
+- fixed y-axis limits being set to # of factor levels when the maximum y-value is lower than the # of factor values
 
 # gghalves 0.0.1
 

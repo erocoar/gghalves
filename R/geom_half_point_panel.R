@@ -42,7 +42,8 @@ geom_half_point_panel <- function(
 #' @rdname gghalves-extensions
 #' @format NULL
 #' @usage NULL
-#' @importFrom ggplot2 ggproto Geom GeomPoint 
+#' @importFrom ggplot2 ggproto Geom GeomPoint alpha
+#' @importFrom grid pointsGrob
 #' @export
 GeomHalfPointPanel <- ggproto(
   "GeomHalfPointPanel", 

@@ -3,11 +3,10 @@
 #' @inheritParams geom_half_point
 #' @importFrom ggplot2 layer
 #' @examples 
-#' ggplot(iris, aes(x = Species, y = Petal.Width, color = Species)) + 
-#'   geom_half_point_panel()
-#'   
-#' ggplot(iris, aes(x = Species, y = Petal.Width, color = Species)) + 
-#'   geom_half_point_panel(side = "l")
+#' ggplot(iris, aes(y = Sepal.Width)) +
+#'   geom_half_boxplot() +
+#'   geom_half_point_panel(aes(x = 0.5, color = Species), range_scale = .5) +
+#'   theme_classic()
 #' @export
 geom_half_point_panel <- function(
   mapping = NULL, data = NULL,
@@ -85,6 +84,15 @@ GeomHalfPointPanel <- ggproto(
       PANEL = 1,
       group = -1
     )
+    
+    if ("width" %in% names(transformation_params)) {
+      transformation_params$width <- transformation_params$width %||% xrange / (4 / range_scale)
+    }
+    if ("height" %in% names(transformation_params)) {
+      transformation_params$height <- transformation_params$height %||% 
+        ggplot2::resolution(data$point_y[[1]], zero = FALSE) * 0.4
+    }
+    
     
     if (is(transformation, "PositionJitter")) {
       transformation_params$width  <- transformation_params$width %||% xrange / (4 / range_scale)

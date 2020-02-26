@@ -111,12 +111,12 @@ GeomHalfViolin <- ggproto(
         GeomPath$draw_panel(both, ...)
       }
       
-      ggplot2:::ggname("geom_violin", grobTree(
+      ggplot2:::ggname("geom_half_violin", grobTree(
         GeomPolygon$draw_panel(newdata, ...),
         quantile_grob)
       )
     } else {
-      ggplot2:::ggname("geom_violin", GeomPolygon$draw_panel(newdata, ...))
+      ggplot2:::ggname("geom_half_violin", GeomPolygon$draw_panel(newdata, ...))
     }
   }
 )

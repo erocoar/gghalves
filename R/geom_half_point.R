@@ -92,6 +92,14 @@ GeomHalfPoint <- ggproto(
       PANEL = 1,
       group = -1
     )
+    
+    if ("width" %in% names(transformation_params)) {
+      transformation_params$width <- transformation_params$width %||% xrange / (4 / range_scale)
+    }
+    if ("height" %in% names(transformation_params)) {
+      transformation_params$height <- transformation_params$height %||% 
+        ggplot2::resolution(data$point_y[[1]], zero = FALSE) * 0.4
+    }
 
     if (is(transformation, "PositionJitter")) {
       transformation_params$width  <- transformation_params$width %||% xrange / (4 / range_scale)

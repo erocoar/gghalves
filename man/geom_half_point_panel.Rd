@@ -68,9 +68,8 @@ the default plot specification, e.g. \code{\link[=borders]{borders()}}.}
 Points with jitter for half geoms. Unlike `geom_half_point`, `geom_half_point_panel` does not dodge different grouping aesthetics. This allows multiple groups in a single cloud of points (see examples).
 }
 \examples{
-ggplot(iris, aes(x = Species, y = Petal.Width, color = Species)) + 
-  geom_half_point_panel()
-  
-ggplot(iris, aes(x = Species, y = Petal.Width, color = Species)) + 
-  geom_half_point_panel(side = "l")
+ggplot(iris, aes(y = Sepal.Width)) +
+  geom_half_boxplot() +
+  geom_half_point_panel(aes(x = 0.5, color = Species), range_scale = .5) +
+  theme_classic()
 }

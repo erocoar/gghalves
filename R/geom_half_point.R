@@ -74,6 +74,8 @@ GeomHalfPoint <- ggproto(
     transformation = PositionJitter,
     transformation_params = list(width = NULL, height = NULL),
     range_scale = 2) {
+    
+    
     if (is.character(data$shape)) {
       data$shape <- translate_shape_string(data$shape)
     }

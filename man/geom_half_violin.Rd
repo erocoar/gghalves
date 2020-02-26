@@ -6,9 +6,9 @@
 \title{Half Violin plot}
 \usage{
 geom_half_violin(mapping = NULL, data = NULL, stat = "half_ydensity",
-  position = "dodge", ..., side = "l", draw_quantiles = NULL,
-  trim = TRUE, scale = "area", na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE)
+  position = "dodge", ..., side = "l", nudge = 0,
+  draw_quantiles = NULL, trim = TRUE, scale = "area",
+  na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 
 stat_half_ydensity(mapping = NULL, data = NULL, geom = "half_violin",
   position = "dodge", ..., bw = "nrd0", adjust = 1,
@@ -48,6 +48,8 @@ often aesthetics, used to set an aesthetic to a fixed value, like
 to the paired geom/stat.}
 
 \item{side}{The side on which to draw the half violin plot. "l" for left, "r" for right, defaults to "l".}
+
+\item{nudge}{Add space between the violinplot and the middle of the space allotted to a given factor on the x-axis.}
 
 \item{draw_quantiles}{If \code{not(NULL)} (default), draw horizontal lines
 at the given quantiles of the density estimate.}

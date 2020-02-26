@@ -1,4 +1,7 @@
-# gghalves 0.0.2
+# gghalves 0.1.0
+
+## New features
+- `geom_half_point_panel` for jittering points but allowing grouped aesthetics inside that jitter (rather than dodging per group). 
 
 ## Minor changes
 - `geom_half_point` now supports passing of positions other than `PositionJitter` and `PositionIdentity` to `transformation` - given they have a `compute_panel` function.

@@ -56,7 +56,7 @@ aligning dot stacks across multiple groups.}
 
 \item{stackdir}{Which direction to stack the dots. "up" (default) places the half-dotplot on the right side. "down" on the left side.}
 
-\item{stackratio}{how close to stack the dots. Default is 1, where dots just
+\item{stackratio}{how close to stack the dots. Default is 1, where dots
 just touch. Use smaller values for closer, overlapping dots.}
 
 \item{dotsize}{The diameter of the dots relative to \code{binwidth}, default 1.}

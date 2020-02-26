@@ -20,7 +20,7 @@ geom_half_point <- function(
   side = "r",
   transformation = PositionJitter,
   transformation_params = list(width = NULL, height = NULL),
-  range_scale = 2,
+  range_scale = .5,
   na.rm = FALSE,
   show.legend = NA,
   inherit.aes = TRUE) {
@@ -73,7 +73,7 @@ GeomHalfPoint <- ggproto(
     data, panel_params, coord, na.rm = FALSE, side = "r", 
     transformation = PositionJitter,
     transformation_params = list(width = NULL, height = NULL),
-    range_scale = 2) {
+    range_scale = .5) {
     
     
     if (is.character(data$shape)) {

@@ -1,7 +1,8 @@
 #' Points with jitter for half geoms. Unlike `geom_half_point`, `geom_half_point_panel` does not dodge different grouping aesthetics. This allows multiple groups in a single cloud of points (see examples).
 #'
 #' @inheritParams geom_half_point
-#' @importFrom ggplot2 layer
+#' @importFrom ggplot2 layer position_jitter .pt .stroke
+#' @importFrom grid pointsGrob gpar
 #' @examples 
 #' ggplot(iris, aes(y = Sepal.Width)) +
 #'   geom_half_boxplot() +
@@ -13,8 +14,7 @@ geom_half_point_panel <- function(
   stat = "identity", position = "identity",
   ...,
   side = "r",
-  transformation = PositionJitter,
-  transformation_params = list(width = NULL, height = NULL),
+  transformation = position_jitter(),
   range_scale = .5,
   na.rm = FALSE,
   show.legend = NA,
@@ -30,7 +30,6 @@ geom_half_point_panel <- function(
     params = list(
       side = side,
       transformation = transformation,
-      transformation_params = transformation_params,
       range_scale = range_scale,
       na.rm = na.rm,
       ...
@@ -64,8 +63,7 @@ GeomHalfPointPanel <- ggproto(
   
   draw_panel = function(data, panel_params, coord, na.rm = FALSE,
                         side = "r", 
-                        transformation = PositionJitter,
-                        transformation_params = list(width = NULL, height = NULL),
+                        transformation = position_jitter(),
                         range_scale = .5) {
 
     if (is.character(data$shape)) {
@@ -85,14 +83,14 @@ GeomHalfPointPanel <- ggproto(
       group = -1
     )
     
-    if ("width" %in% names(transformation_params)) {
+    transformation_params <- transformation$setup_params(data)
+    if (!"width" %in% names(transformation) && "width" %in% names(transformation_params)) {
       transformation_params$width <- transformation_params$width %||% xrange / (4 / range_scale)
     }
-    if ("height" %in% names(transformation_params)) {
+    if (!"height" %in% names(transformation) && "height" %in% names(transformation_params)) {
       transformation_params$height <- transformation_params$height %||% 
         ggplot2::resolution(data$point_y[[1]], zero = FALSE) * 0.4
     }
-    
     
     if (is(transformation, "PositionJitter")) {
       transformation_params$width  <- transformation_params$width %||% xrange / (4 / range_scale)

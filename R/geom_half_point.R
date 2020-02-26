@@ -2,10 +2,11 @@
 #'
 #' @inheritParams ggplot2::geom_point
 #' @param side The side on which to draw the half violin plot. "l" for left, "r" for right, defaults to "l".
-#' @param transformation A `Position` object to calculate the transformation of the points. Defaults to `ggplot2::PositionJitter`.
-#' @param transformation_params A `list` containing named parameter values for the `transformation` object. Defaults to `list(width = NULL, height = NULL)`. For `ggplot2::PositionJitter`, keyword arguments can be `width`, `height` and `seed`.
+#' @param transformation An evaluated `position_*()` function yielding a `Position` object with specified parameters to calculate the transformation of the points. Defaults to `ggplot2::position_jitter()`.
+#' @param transformation_params Deprecated. A `list` containing named parameter values for the `transformation` object. Defaults to `list(width = NULL, height = NULL)`. For `ggplot2::PositionJitter`, keyword arguments can be `width`, `height` and `seed`.
 #' @param range_scale If no `width` argument is specified in `transformation_params`, `range_scale` is used to determine the width of the jitter. Defaults to `0.5`, which is half of the allotted space for the jitter-points, whereas `1` would use all of the allotted space.
-#' @importFrom ggplot2 layer
+#' @importFrom ggplot2 layer position_jitter .pt .stroke
+#' @importFrom grid pointsGrob gpar
 #' @examples 
 #' ggplot(iris, aes(x = Species, y = Petal.Width, fill = Species)) + 
 #'   geom_half_point()
@@ -18,7 +19,7 @@ geom_half_point <- function(
   stat = "HalfPoint", position = "dodge2",
   ...,
   side = "r",
-  transformation = PositionJitter,
+  transformation = position_jitter(),
   transformation_params = list(width = NULL, height = NULL),
   range_scale = .5,
   na.rm = FALSE,
@@ -72,10 +73,13 @@ GeomHalfPoint <- ggproto(
 
   draw_group = function(
     data, panel_params, coord, na.rm = FALSE, side = "r", 
-    transformation = PositionJitter,
+    transformation = position_jitter(),
     transformation_params = list(width = NULL, height = NULL),
     range_scale = .5) {
-    
+
+    if (isFALSE(isTRUE(all.equal(transformation_params, list(width = NULL, height = NULL))))) {
+      warning("Argument deprecated.\n Use `transformation = position_*(params)` instead of passing the params via `transformation_params`")
+    }
     
     if (is.character(data$shape)) {
       data$shape <- translate_shape_string(data$shape)
@@ -86,6 +90,8 @@ GeomHalfPoint <- ggproto(
     data$x <- data$x + x_add
     
     # Add Position Transformation
+    transformation_params_new <- transformation$setup_params(data)
+
     transformation_df <- data.frame(
       x     = data$x,
       y     = data$point_y[[1]],
@@ -93,19 +99,34 @@ GeomHalfPoint <- ggproto(
       group = -1
     )
     
+    if (!"width" %in% names(transformation) && "width" %in% names(transformation_params_new)) {
+      transformation_params_new$width <- xrange / (4 / range_scale)
+    }
+    if (!"height" %in% names(transformation) && "height" %in% names(transformation_params_new)) {
+      transformation_params_new$height <- ggplot2::resolution(data$point_y[[1]], zero = FALSE) * 0.4
+    }
+    
+    # Add deprecated transformation_params args to new transformation_params list
+    par_idx <- !sapply(transformation_params, is.null)
+    transformation_params_new[names(transformation_params)[par_idx]] <- transformation_params[par_idx]
+    transformation_params <- transformation_params_new
+    
+    # deprecated
     if ("width" %in% names(transformation_params)) {
       transformation_params$width <- transformation_params$width %||% xrange / (4 / range_scale)
     }
+    # deprecated
     if ("height" %in% names(transformation_params)) {
       transformation_params$height <- transformation_params$height %||% 
         ggplot2::resolution(data$point_y[[1]], zero = FALSE) * 0.4
     }
 
-    if (is(transformation, "PositionJitter")) {
-      transformation_params$width  <- transformation_params$width %||% xrange / (4 / range_scale)
-      transformation_params$height <- transformation_params$height %||% 
-        ggplot2::resolution(data$point_y[[1]], zero = FALSE) * 0.4
-    }
+    # if (is(transformation, "PositionJitter")) {
+    #   transformation_params$width  <- transformation_params$width %||% xrange / (4 / range_scale)
+    #   transformation_params$height <- transformation_params$height %||% 
+    #     ggplot2::resolution(data$point_y[[1]], zero = FALSE) * 0.4
+    # }
+    tdf <<- transformation_df
 
     if (is(transformation, "PositionIdentity") || is(transformation, "PositionJitter")) {
       trans_positions <- transformation$compute_layer(

@@ -126,7 +126,6 @@ GeomHalfPoint <- ggproto(
     #   transformation_params$height <- transformation_params$height %||% 
     #     ggplot2::resolution(data$point_y[[1]], zero = FALSE) * 0.4
     # }
-    tdf <<- transformation_df
 
     if (is(transformation, "PositionIdentity") || is(transformation, "PositionJitter")) {
       trans_positions <- transformation$compute_layer(

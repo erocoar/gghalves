@@ -46,7 +46,8 @@ geom_half_point <- function(
 #' @rdname gghalves-extensions
 #' @format NULL
 #' @usage NULL
-#' @importFrom ggplot2 ggproto Geom GeomBoxplot GeomPoint
+#' @importFrom ggplot2 ggproto Geom GeomBoxplot GeomPoint alpha .pt .stroke
+#' @importFrom grid pointsGrob gpar
 #' @export
 GeomHalfPoint <- ggproto(
   "GeomHalfPoint", 
@@ -136,6 +137,20 @@ GeomHalfPoint <- ggproto(
       stroke = data$stroke
     )
     
-    GeomPoint$draw_panel(point_df, panel_params, coord)
+    coords <- coord$transform(point_df, panel_params)
+    ggplot2:::ggname(
+      "geom_half_point",
+      pointsGrob(
+        coords$x, coords$y,
+        pch = coords$shape,
+        gp = gpar(
+          col = alpha(coords$colour, coords$alpha),
+          fill = alpha(coords$fill, coords$alpha),
+          # Stroke is added around the outside of the point
+          fontsize = coords$size * .pt + coords$stroke * .stroke / 2,
+          lwd = coords$stroke * .stroke / 2
+          )
+        )
+    )
   }
 )

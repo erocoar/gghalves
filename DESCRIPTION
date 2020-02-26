@@ -23,6 +23,7 @@ Collate:
     'geom_half_dotplot.R'
     'geom_half_boxplot.R'
     'geom_half_point.R'
+    'geom_half_point_panel.R'
     'geom_half_violin.R'
     'stat-half-bindot.R'
     'stat-half-point.R'

@@ -7,3 +7,5 @@
 ^NEWS$
 ^README\.Rmd$
 ^docs$
+^doc$
+^Meta$

@@ -15,9 +15,6 @@ knitr::opts_chunk$set(
 )
 library(gghalves)
 library(dplyr)
-library(devtools)
-devtools::install_github("eclarke/ggbeeswarm", force = TRUE)
-library(ggbeeswarm)
 ```
 
 This vignette is intended to showcase the usage of the `gghalves` extension by going through the individual `_half_` `geom`s to explain details of usage and function arguments.
@@ -127,18 +124,18 @@ ggplot(df, aes(x = genotype, y = score, fill = gender)) +
 
 As mentioned in the package description, `gghalves` can work well in combination with certain `ggplot2` extensions. One of them is `geom_beeswarm` of the `ggbeeswarm` package. Note that, currently, you will need to install the latest version from GitHub to support the passing of `beeswarmArgs`.
 
-```{r}
+```{r, eval=FALSE}
 ggplot(iris, aes(x = Species, y = Sepal.Width)) +
   geom_half_boxplot() +
-  ggbeeswarm::geom_beeswarm(beeswarmArgs = list(side = 1))
+  geom_beeswarm(beeswarmArgs = list(side = 1))
 ```
-
+![](/img/Rplot01.PNG)
 
 ## Combining Different Geoms
 
 Lastly, let us remake the plot displayed in the GitHub Readme. It is for display-purposes only, and thus uses a lot of filtering and a lot of `geom`s...
 
-```{r}
+```{r, eval=FALSE}
 ggplot() +
   
   geom_half_boxplot(
@@ -171,7 +168,7 @@ ggplot() +
   scale_color_manual(values = c("setosa" = "#cba1d2", "versicolor"="#7067CF","virginica"="#B7C0EE")) +
   theme(legend.position = "none")
 ```
-
+![](/img/Rplot2.PNG)
 
 
 

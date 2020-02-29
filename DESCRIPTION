@@ -17,7 +17,8 @@ Imports:
 RoxygenNote: 6.1.1
 Suggests:
 	knitr,
-    	rmarkdown
+    	rmarkdown,
+	dplyr
 Collate: 
     'utilities.R'
     'geom_half_dotplot.R'

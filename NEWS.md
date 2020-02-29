@@ -3,6 +3,9 @@
 ## New features
 - `geom_half_point_panel` for jittering points but allowing grouped aesthetics inside that jitter (rather than dodging per group). 
 
+## Major Changes
+- `transformation_params` argument of `geom_half_point` has been deprecated in favor of passing the arguments directly to `transformation` by evaluating `position_*(arguments)` functions that return `Position` objects.
+
 ## Minor changes
 - `geom_half_point` now supports passing of positions other than `PositionJitter` and `PositionIdentity` to `transformation` -- given they have a `compute_panel` function.
 - added `range_scale` parameter to `geom_half_point`. When no `width` argument is passed in `transformation_params`, `range_scale` defaults to `0.5`, which leads to the points using half of their allotted space. `1` would have them end up using all of their allotted space. 

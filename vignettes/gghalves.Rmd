@@ -15,6 +15,7 @@ knitr::opts_chunk$set(
 )
 library(gghalves)
 library(dplyr)
+library(devtools)
 devtools::install_github("eclarke/ggbeeswarm", force = TRUE)
 library(ggbeeswarm)
 ```

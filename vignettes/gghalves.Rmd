@@ -129,7 +129,7 @@ ggplot(iris, aes(x = Species, y = Sepal.Width)) +
   geom_half_boxplot() +
   geom_beeswarm(beeswarmArgs = list(side = 1))
 ```
-![](Rplot01.PNG)
+<img src="https://i.imgur.com/FwXXrkx.png">
 
 ## Combining Different Geoms
 
@@ -168,8 +168,7 @@ ggplot() +
   scale_color_manual(values = c("setosa" = "#cba1d2", "versicolor"="#7067CF","virginica"="#B7C0EE")) +
   theme(legend.position = "none")
 ```
-![](Rplot2.PNG)
-
+<img src="https://i.imgur.com/PlatHGU.png">
 
 
 

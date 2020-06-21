@@ -15,7 +15,7 @@ geom_half_point_panel <- function(
   ...,
   side = "r",
   transformation = position_jitter(),
-  range_scale = .5,
+  range_scale = .75,
   na.rm = FALSE,
   show.legend = NA,
   inherit.aes = TRUE) {

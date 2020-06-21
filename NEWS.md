@@ -1,3 +1,10 @@
+# gghalves 0.1.1
+## Minor Changes
+- `transformation_params` argument of `geom_half_point` has been removed (after previously having been deprecated). Instead, pass `position_*(params)` with the `transformation` argument instead.
+- `range_scale` has been set to a default value of `0.75` for `geom_half_point_panel` to match `geom_half_point`.
+## Bug Fixes
+- fixed a bug in `geom_half_point` where jitter width defaulted to the default value of `ggplot2::PositionJitter` rather than a custom calculation. `range_scale` should work better as a result, and the geom can be used with small values without problems.
+
 # gghalves 0.1.0
 
 ## New features

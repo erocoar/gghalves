@@ -3,7 +3,7 @@
 #' @inheritParams ggplot2::geom_point
 #' @param side The side on which to draw the half violin plot. "l" for left, "r" for right, defaults to "l".
 #' @param transformation An evaluated `position_*()` function yielding a `Position` object with specified parameters to calculate the transformation of the points. Defaults to `ggplot2::position_jitter()`.
-#' @param range_scale If no `width` argument is specified in `transformation_params`, `range_scale` is used to determine the width of the jitter. Defaults to `0.75`, which is half of the allotted space for the jitter-points, whereas `1` would use all of the allotted space.
+#' @param range_scale If no `width` argument is specified in `transformation`, `range_scale` is used to determine the width of the jitter. Defaults to `0.75`, which is half of the allotted space for the jitter-points, whereas `1` would use all of the allotted space.
 #' @importFrom ggplot2 layer position_jitter .pt .stroke
 #' @importFrom grid pointsGrob gpar
 #' @examples 

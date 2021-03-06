@@ -156,7 +156,7 @@ GeomHalfBoxplot <- ggproto("GeomHalfBoxplot", GeomBoxplot,
   
       error_whiskers <- data.frame(
         x = if (side == "r") (data$xmin + xrange / 2) + nudge else (data$xmin + xrange / 2) - nudge ,
-        xend = if (side == "r") data$xmax - error_length_add else data$xmin + error_length_add,
+        xend = if (side == "r") data$xmax - error_length_add + nudge else data$xmin + error_length_add - nudge,
         y = c(data$ymax, data$ymin),
         yend = c(data$ymax, data$ymin),
         alpha = NA,

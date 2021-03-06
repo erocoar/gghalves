@@ -70,14 +70,14 @@ GeomHalfViolin <- ggproto(
     if (side == "l") {
       data <- transform(
         data,
-        xminv = x + violinwidth * (xmin - x),
+        xminv = x + violinwidth * (xmin - x) - nudge,
         xmaxv = x - nudge
         )
     } else {
       data <- transform(
         data,
         xminv = x + nudge,
-        xmaxv = x + violinwidth * (xmax - x)
+        xmaxv = x + violinwidth * (xmax - x) + nudge
       )
     }
     

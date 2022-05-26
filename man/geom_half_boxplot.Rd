@@ -107,6 +107,9 @@ display.}
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
+
+\item{geom, stat}{Use to override the default connection between
+`geom_boxplot()` and `stat_boxplot()`.}
 }
 \description{
 A half boxplot

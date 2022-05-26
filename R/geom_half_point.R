@@ -81,7 +81,7 @@ GeomHalfPoint <- ggproto(
     # }
     
     if (is.character(data$shape)) {
-      data$shape <- translate_shape_string(data$shape)
+      data$shape <- ggplot2:::translate_shape_string(data$shape)
     }
     
     xrange <- data$xmax - data$xmin

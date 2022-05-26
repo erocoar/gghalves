@@ -67,7 +67,7 @@ GeomHalfPointPanel <- ggproto(
                         range_scale = .5) {
 
     if (is.character(data$shape)) {
-      data$shape <- translate_shape_string(data$shape)
+      data$shape <- ggplot2:::translate_shape_string(data$shape)
     }
     
     xrange <- data$xmax[1] - data$xmin[1]

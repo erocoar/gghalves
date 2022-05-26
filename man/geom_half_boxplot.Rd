@@ -51,9 +51,6 @@ the plot data. The return value must be a \code{data.frame}, and
 will be used as the layer data. A \code{function} can be created
 from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
 
-\item{stat}{Use to override the default connection between
-\code{geom_boxplot} and \code{stat_boxplot}.}
-
 \item{position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
@@ -68,79 +65,7 @@ to the paired geom/stat.}
 
 \item{nudge}{Add space between the boxplot and the middle of the space allotted to a given factor on the x-axis.}
 
-\item{outlier.colour}{Default aesthetics for outliers. Set to \code{NULL} to inherit from the
-aesthetics used for the box.
-
-In the unlikely event you specify both US and UK spellings of colour, the
-US spelling will take precedence.
-
-Sometimes it can be useful to hide the outliers, for example when overlaying
-the raw data points on top of the boxplot. Hiding the outliers can be achieved
-by setting \code{outlier.shape = NA}. Importantly, this does not remove the outliers,
-it only hides them, so the range calculated for the y-axis will be the
-same with outliers shown and outliers hidden.}
-
-\item{outlier.color}{Default aesthetics for outliers. Set to \code{NULL} to inherit from the
-aesthetics used for the box.
-
-In the unlikely event you specify both US and UK spellings of colour, the
-US spelling will take precedence.
-
-Sometimes it can be useful to hide the outliers, for example when overlaying
-the raw data points on top of the boxplot. Hiding the outliers can be achieved
-by setting \code{outlier.shape = NA}. Importantly, this does not remove the outliers,
-it only hides them, so the range calculated for the y-axis will be the
-same with outliers shown and outliers hidden.}
-
-\item{outlier.fill}{Default aesthetics for outliers. Set to \code{NULL} to inherit from the
-aesthetics used for the box.
-
-In the unlikely event you specify both US and UK spellings of colour, the
-US spelling will take precedence.
-
-Sometimes it can be useful to hide the outliers, for example when overlaying
-the raw data points on top of the boxplot. Hiding the outliers can be achieved
-by setting \code{outlier.shape = NA}. Importantly, this does not remove the outliers,
-it only hides them, so the range calculated for the y-axis will be the
-same with outliers shown and outliers hidden.}
-
-\item{outlier.shape}{Default aesthetics for outliers. Set to \code{NULL} to inherit from the
-aesthetics used for the box.
-
-In the unlikely event you specify both US and UK spellings of colour, the
-US spelling will take precedence.
-
-Sometimes it can be useful to hide the outliers, for example when overlaying
-the raw data points on top of the boxplot. Hiding the outliers can be achieved
-by setting \code{outlier.shape = NA}. Importantly, this does not remove the outliers,
-it only hides them, so the range calculated for the y-axis will be the
-same with outliers shown and outliers hidden.}
-
-\item{outlier.size}{Default aesthetics for outliers. Set to \code{NULL} to inherit from the
-aesthetics used for the box.
-
-In the unlikely event you specify both US and UK spellings of colour, the
-US spelling will take precedence.
-
-Sometimes it can be useful to hide the outliers, for example when overlaying
-the raw data points on top of the boxplot. Hiding the outliers can be achieved
-by setting \code{outlier.shape = NA}. Importantly, this does not remove the outliers,
-it only hides them, so the range calculated for the y-axis will be the
-same with outliers shown and outliers hidden.}
-
-\item{outlier.stroke}{Default aesthetics for outliers. Set to \code{NULL} to inherit from the
-aesthetics used for the box.
-
-In the unlikely event you specify both US and UK spellings of colour, the
-US spelling will take precedence.
-
-Sometimes it can be useful to hide the outliers, for example when overlaying
-the raw data points on top of the boxplot. Hiding the outliers can be achieved
-by setting \code{outlier.shape = NA}. Importantly, this does not remove the outliers,
-it only hides them, so the range calculated for the y-axis will be the
-same with outliers shown and outliers hidden.}
-
-\item{outlier.alpha}{Default aesthetics for outliers. Set to \code{NULL} to inherit from the
+\item{outlier.colour, outlier.color, outlier.fill, outlier.shape, outlier.size, outlier.stroke, outlier.alpha}{Default aesthetics for outliers. Set to \code{NULL} to inherit from the
 aesthetics used for the box.
 
 In the unlikely event you specify both US and UK spellings of colour, the

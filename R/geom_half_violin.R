@@ -4,6 +4,9 @@
 #' blend of [geom_boxplot()] and [geom_density()]: a
 #' violin plot is a mirrored density plot displayed in the same way as a
 #' boxplot.
+#' 
+#' The half-violin plot accepts an optional `split` aesthethic to compare 
+#' data separated by a binary variable side-by-side.
 #'
 #' @inheritParams ggplot2::geom_violin
 #' @param side The side on which to draw the half violin plot. "l" for left, "r" for right, defaults to "l".
@@ -15,6 +18,14 @@
 #'
 #' ggplot(iris, aes(x = Species, y = Petal.Width, fill = Species)) +
 #'   geom_half_violin(side = "r")
+#'   
+#' ggplot() +
+#'   geom_half_violin(
+#'     data = ToothGrowth, 
+#'     aes(x = as.factor(dose), y = len, split = supp, fill = supp),
+#'     position = "identity"
+#'   ) + 
+#'   theme_minimal()  
 #' @export
 #' @references Hintze, J. L., Nelson, R. D. (1998) Violin Plots: A Box
 #' Plot-Density Trace Synergism. The American Statistician 52, 181-184.
@@ -57,6 +68,8 @@ geom_half_violin <- function(
 #' @export
 GeomHalfViolin <- ggproto(
   "GeomHalfViolin", GeomViolin,
+  
+  default_aes = ggplot2:::modify_list(aes(split = NA), GeomViolin$default_aes),
 
   setup_data = function(data, params) {
     x_data    <- GeomBoxplot$setup_data(data, NULL)
@@ -66,8 +79,13 @@ GeomHalfViolin <- ggproto(
   },
 
   setup_params = function(data, params) {
-    params$side <- rep(params$side, 
-                      ceiling(length(unique(data$group))/length(params$side)))
+    if ("split" %in% colnames(data)) {
+      stopifnot(length(unique(data$split)) == 2)
+      params$side <- rep(c("l", "r"), max(data$group) / 2)
+    } else {
+      params$side <- rep(params$side, 
+                       ceiling(length(unique(data$group))/length(params$side)))
+    }
     params
   },
   

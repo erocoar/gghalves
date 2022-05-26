@@ -58,9 +58,6 @@ the plot data. The return value must be a \code{data.frame}, and
 will be used as the layer data. A \code{function} can be created
 from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
 
-\item{stat}{Use to override the default connection between
-\code{geom_violin} and \code{stat_ydensity}.}
-
 \item{position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
@@ -97,13 +94,13 @@ rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
 
-\item{geom}{Use to override the default connection between
-\code{geom_violin} and \code{stat_ydensity}.}
+\item{geom, stat}{Use to override the default connection between
+\code{geom_violin()} and \code{stat_ydensity()}.}
 
 \item{bw}{The smoothing bandwidth to be used.
 If numeric, the standard deviation of the smoothing kernel.
 If character, a rule to choose the bandwidth, as listed in
-\code{\link[stats:bw.nrd]{stats::bw.nrd()}}.}
+\code{\link[stats:bandwidth]{stats::bw.nrd()}}.}
 
 \item{adjust}{A multiplicate bandwidth adjustment. This makes it possible
 to adjust the bandwidth while still using the a bandwidth estimator.
@@ -117,12 +114,24 @@ blend of [geom_boxplot()] and [geom_density()]: a
 violin plot is a mirrored density plot displayed in the same way as a
 boxplot.
 }
+\details{
+The half-violin plot accepts an optional `split` aesthethic to compare 
+data separated by a binary variable side-by-side.
+}
 \examples{
-ggplot(iris, aes(x = Species, y = Petal.Width, fill = Species)) + 
+ggplot(iris, aes(x = Species, y = Petal.Width, fill = Species)) +
   geom_half_violin()
-  
-ggplot(iris, aes(x = Species, y = Petal.Width, fill = Species)) + 
+
+ggplot(iris, aes(x = Species, y = Petal.Width, fill = Species)) +
   geom_half_violin(side = "r")
+  
+ggplot() +
+  geom_half_violin(
+    data = ToothGrowth, 
+    aes(x = as.factor(dose), y = len, split = supp, fill = supp),
+    position = "identity"
+  ) + 
+  theme_minimal()  
 }
 \references{
 Hintze, J. L., Nelson, R. D. (1998) Violin Plots: A Box

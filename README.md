@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/erocoar/gghalves.svg?branch=master)](https://travis-ci.org/erocoar/gghalves)
+[![R-CMD-check](https://github.com/erocoar/gghalves/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/erocoar/gghalves/actions/workflows/R-CMD-check.yaml)
 [![CRAN_Release_Badge](http://www.r-pkg.org/badges/version-ago/gghalves)](https://CRAN.R-project.org/package=gghalves)
 [![CRAN_Download_Badge](http://cranlogs.r-pkg.org/badges/grand-total/gghalves)](https://CRAN.R-project.org/package=gghalves)
 

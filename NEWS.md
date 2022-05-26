@@ -1,3 +1,13 @@
+# gghalves 0.1.2
+## New Features
+- `geom_half_violin()` now accepts an optional `split` aesthetic to compare a binary variable side-by-side (see vignette)
+- `geom_half_violin()` now accepts a vector for the `side` argument, supporting different sizes per plotting group
+
+## Bug Fixes
+- fixed missing import of `remove_missing` function
+- fixed missing import of `translate_shape_string` function
+
+
 # gghalves 0.1.1
 ## Minor Changes
 - `transformation_params` argument of `geom_half_point` has been removed (after previously having been deprecated). Instead, pass `position_*(params)` with the `transformation` argument instead.

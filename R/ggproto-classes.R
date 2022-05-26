@@ -2,6 +2,4 @@
 #' 
 #' @name gghalves-extensions
 #' @rdname gghalves-extensions
-#' @rdname ggproto-classes
-#'
 NULL

@@ -47,7 +47,7 @@ stat_half_ydensity <- function(
 StatHalfYdensity <- ggproto(
   "StatHalfYdensity", StatBoxplot,
   required_aes = c("x", "y"),
-  non_missing_aes = "weight",
+  non_missing_aes = c("weight", "split"),
   
   compute_group = function(
     data, scales, width = NULL, bw = "nrd0", adjust = 1,

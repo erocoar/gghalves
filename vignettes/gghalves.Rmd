@@ -59,6 +59,17 @@ Making the transformation work with custom `Position`s from `ggplot2` extensions
 
 Like all `_half_` geoms, `geom_half_point` also takes a `side` argument, with `l` for left and `r` for right.
 
+
+## GeomHalfPointPanel
+
+Sometimes we want to color points within the `aes()` groupings. In that case, we can make use of `geom_half_point_panel()`.
+
+```{r}
+ggplot(iris, aes(y = Sepal.Width)) +
+  geom_half_boxplot() +
+  geom_half_point_panel(aes(x = 0.5, color = Species), range_scale = .5)
+```
+
 ## GeomHalfBoxplot
 
 `GeomHalfBoxplot` displays a boxplot that is cut in half and plotted either on the left or right side of the space allotted to the specific factor on the x-axis.
@@ -84,6 +95,16 @@ ggplot(iris, aes(x = Species, y = Sepal.Width)) +
   geom_half_violin()
 ```
 
+Furthermore, if we have a binary grouping variable (such as control/treatment) we can plot side-by-side comparisons with the optional `split` aesthetic:
+
+```{r}
+ggplot() +
+  geom_half_violin(
+    data = ToothGrowth, 
+    aes(x = as.factor(dose), y = len, split = supp, fill = supp),
+    position = "identity"
+  )
+```
 
 ## GeomHalfDotplot
 

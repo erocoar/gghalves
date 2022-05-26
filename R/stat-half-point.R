@@ -1,7 +1,7 @@
 #' @rdname gghalves-extensions
 #' @format NULL
 #' @usage NULL
-#' @importFrom ggplot2 ggproto StatBoxplot
+#' @importFrom ggplot2 ggproto StatBoxplot remove_missing
 #' @export
 StatHalfPoint <- ggproto(
   "StatHalfPoint", StatBoxplot,

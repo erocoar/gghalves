@@ -91,10 +91,13 @@ GeomHalfViolin <- ggproto(
   
   draw_group = function(self, data, side = "l", nudge = 0, ..., draw_quantiles = NULL) {
     # Find the points for the line to go all the way around
-    if (length(side) == 1) {
-      side <- rep(side, data$group[1])
+    is_panel <- data$group[1] == -1
+    is_group <- FALSE
+    if (isFALSE(is_panel)) {
+      is_group <- side[data$group[1]] == 'l'
     }
-    if (side[unique(data$group)] == "l") {
+    
+    if ((is_panel & (side[1] == "l")) | is_group) {
       data <- transform(
         data,
         xminv = x + violinwidth * (xmin - x) - nudge,

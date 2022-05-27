@@ -132,6 +132,15 @@ ggplot() +
     position = "identity"
   ) + 
   theme_minimal()  
+  
+ggplot(ToothGrowth, aes(x = supp, y = len, color = supp)) + 
+  geom_half_violin(side = c("l", "r"))
+
+ggplot(data = ToothGrowth, aes(x = 1, y = len)) +
+  geom_half_point(aes(y = len), side = "l") +
+  geom_half_violin(aes(y = len), side = "r") +
+  coord_flip()
+
 }
 \references{
 Hintze, J. L., Nelson, R. D. (1998) Violin Plots: A Box

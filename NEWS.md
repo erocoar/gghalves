@@ -1,3 +1,7 @@
+# gghalves 0.1.3
+## Bug Fixes
+- fixed `geom_half_violin()` bug where panel plots (without any grouping aesthetic) would no longer work
+
 # gghalves 0.1.2
 ## New Features
 - `geom_half_violin()` now accepts an optional `split` aesthetic to compare a binary variable side-by-side (see vignette)

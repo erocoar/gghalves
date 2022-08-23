@@ -109,26 +109,27 @@ GeomHalfBoxplot <- ggproto("GeomHalfBoxplot", GeomBoxplot,
     }
     
     xrange <- data$xmax - data$xmin
-    
-    common <- data.frame(
+    common <- list(
       colour = data$colour,
-      size = data$size,
       linetype = data$linetype,
       fill = alpha(data$fill, data$alpha),
       group = data$group,
       stringsAsFactors = FALSE
     )
-                           
-    whiskers <- data.frame(
-       x = data$x,
-       xend = data$x,
+    if (utils::packageVersion('ggplot2') > '3.6.0'){
+        common$size <- data$linewidth    
+    }else{ 
+        common$size <- data$size
+    }
+    whiskers <- data_frame0(
+       x = c(data$x, data$x),
+       xend = c(data$x, data$x),
        y = c(data$upper, data$lower),
        yend = c(data$ymax, data$ymin),
-       alpha = NA,
-       common,
-       stringsAsFactors = FALSE
+       alpha = c(NA_real_, NA_real_),
+       !!!common,
+       .size = 2
     )
-    
     # Adjust whisker position based on nudge (extra spacing between geom and middle)
     # If side == right, move whisker to right and vice versa
     if (side == "r") {
@@ -156,16 +157,15 @@ GeomHalfBoxplot <- ggproto("GeomHalfBoxplot", GeomBoxplot,
       error_length_add <- xrange / 2 #((data$xmin + xrange / 2) - data$xmin)
       error_length_add <- error_length_add * (1 - errorbar.length)
   
-      error_whiskers <- data.frame(
+      error_whiskers <- data_frame0(
         x = if (side == "r") (data$xmin + xrange / 2) + nudge else (data$xmin + xrange / 2) - nudge ,
         xend = if (side == "r") data$xmax - error_length_add + nudge else data$xmin + error_length_add - nudge,
         y = c(data$ymax, data$ymin),
         yend = c(data$ymax, data$ymin),
-        alpha = NA,
-        common,
-        stringsAsFactors = FALSE
-        )
-      
+        alpha = c(NA_real_, NA_real_),
+        !!!common,
+        .size = 2 
+      )
       if (isTRUE(center)) {
         error_whiskers$x <- data$x
         if (side == "r") {
@@ -180,7 +180,7 @@ GeomHalfBoxplot <- ggproto("GeomHalfBoxplot", GeomBoxplot,
         error_grob <- NULL
       }
     
-    box <- data.frame(
+    box <- data_frame0(
       xmin = if (side == "r") data$xmax else data$xmin,
       xmax = (data$xmin + xrange / 2) + switch((side == "r") + 1, nudge * -1, nudge),
       ymin = data$lower,
@@ -190,12 +190,11 @@ GeomHalfBoxplot <- ggproto("GeomHalfBoxplot", GeomBoxplot,
       ynotchupper = ifelse(notch, data$notchupper, NA),
       notchwidth = notchwidth,
       alpha = data$alpha,
-      common,
-      stringsAsFactors = FALSE
-      )
-    
+      !!!common,
+      .size = 2
+    )
     if (!is.null(data$outliers) && length(data$outliers[[1]] >= 1)) {
-      outliers <- ggplot2:::new_data_frame(list(
+      outliers <- data_frame0(
         y = data$outliers[[1]],
         x = data$x[1] + switch((side == "r") + 1, nudge * -1, nudge),
         colour = outlier.colour %||% data$colour[1],
@@ -204,9 +203,9 @@ GeomHalfBoxplot <- ggproto("GeomHalfBoxplot", GeomBoxplot,
         size = outlier.size %||% data$size[1],
         stroke = outlier.stroke %||% data$stroke[1],
         fill = NA,
-        alpha = outlier.alpha %||% data$alpha[1]
-      ), n = length(data$outliers[[1]]))
-      
+        alpha = outlier.alpha %||% data$alpha[1], 
+        .size = length(data$outliers[[1]]),
+      )
       if (isTRUE(center)) {
         if (side == "r") {
           outliers$x <- outliers$x + xrange / 4
@@ -229,3 +228,11 @@ GeomHalfBoxplot <- ggproto("GeomHalfBoxplot", GeomBoxplot,
   tree
   }
 )
+
+
+# this is from the no-export function of ggplot2-dev.
+
+#' @importFrom vctrs data_frame
+data_frame0 <- function(...){
+    vctrs::data_frame(..., .name_repair = "minimal")
+}

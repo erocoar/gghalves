@@ -13,11 +13,12 @@ Depends:
 Imports:
 	grid,
 	gtable,
-	grDevices
-RoxygenNote: 7.2.0
+	grDevices,
+    vctrs (>= 0.4.1)
+RoxygenNote: 7.2.1
 Suggests:
 	knitr,
-    	rmarkdown,
+    rmarkdown,
 	dplyr
 Collate: 
     'utilities.R'

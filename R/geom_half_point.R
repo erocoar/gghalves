@@ -90,7 +90,7 @@ GeomHalfPoint <- ggproto(
 
     # Add Position Transformation
     transformation_params_new <- transformation$setup_params(data)
-    transformation_df <- data.frame(
+    transformation_df <- data_frame0(
       x     = data$x,
       y     = data$point_y[[1]],
       PANEL = 1,
@@ -162,7 +162,7 @@ GeomHalfPoint <- ggproto(
     # } #TODO parameterize left/right-shift
       
 
-    point_df <- data.frame(
+    point_df <- data_frame0(
       colour = data$colour,
       shape  = data$shape,
       x      = trans_positions$x,

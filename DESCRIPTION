@@ -12,14 +12,13 @@ Depends:
 	R (>= 3.4.0)
 Imports:
 	grid,
-	gtable,
-	grDevices,
     vctrs (>= 0.4.1)
 RoxygenNote: 7.2.1
 Suggests:
-	knitr,
+    knitr,
     rmarkdown,
-	dplyr
+    dplyr,
+    ggbeeswarm
 Collate: 
     'utilities.R'
     'geom_half_dotplot.R'

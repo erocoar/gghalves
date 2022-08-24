@@ -116,8 +116,8 @@ GeomHalfBoxplot <- ggproto("GeomHalfBoxplot", GeomBoxplot,
       group = data$group,
       stringsAsFactors = FALSE
     )
-    if (utils::packageVersion('ggplot2') > '3.6.0'){
-        common$size <- data$linewidth    
+    if (utils::packageVersion('ggplot2') > '3.3.6'){
+        common$linewidth <- data$linewidth
     }else{ 
         common$size <- data$size
     }
@@ -200,7 +200,7 @@ GeomHalfBoxplot <- ggproto("GeomHalfBoxplot", GeomBoxplot,
         colour = outlier.colour %||% data$colour[1],
         fill = outlier.fill %||% data$fill[1],
         shape = outlier.shape %||% data$shape[1],
-        size = outlier.size %||% data$size[1],
+        size = (outlier.size %||% data$size[1]) %||% data$linewidth[1],
         stroke = outlier.stroke %||% data$stroke[1],
         fill = NA,
         alpha = outlier.alpha %||% data$alpha[1], 

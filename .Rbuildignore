@@ -11,3 +11,8 @@
 ^Meta$
 ^\.github$
 ^CRAN-SUBMISSION$
+^inst/extdata/.*\.png$
+^Makefile$
+^README\.md$
+^CONDUCT\.md$
+^\.Rproj$

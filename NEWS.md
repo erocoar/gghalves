@@ -1,3 +1,7 @@
+# gghalves 0.1.4
+## Bug Fixes
+- fixed compatibility of `geom_half_boxplot()` with `ggplot2` version 3.4.
+
 # gghalves 0.1.3
 ## Bug Fixes
 - fixed `geom_half_violin()` bug where panel plots (without any grouping aesthetic) would no longer work

@@ -6,8 +6,6 @@
 #' @param side The side of the half-geom, "l" for left and "r" for right, defaults to "l".
 #' @param center Boolean whether to center the half-boxplot instead of aligning it to its respective side.
 #' @param nudge Add space between the boxplot and the middle of the space allotted to a given factor on the x-axis.
-#' @param stat Use to override the default connection between
-#'   `geom_boxplot()` and `stat_boxplot()`.
 #' @importFrom ggplot2 layer position_dodge2 aes GeomSegment GeomCrossbar
 #' @importFrom grid grobTree grobName
 #' @examples 
@@ -93,8 +91,8 @@ GeomHalfBoxplot <- ggproto("GeomHalfBoxplot", GeomBoxplot,
   },
                            
   draw_group = function(
-    data, panel_params, coord, fatten = 2,
-    side = "l", center = FALSE, nudge = nudge,
+    data, panel_params, coord, lineend = "butt", linejoin = "mitre",
+    fatten = 2, side = "l", center = FALSE, nudge = nudge,
     outlier.colour = NULL, outlier.fill = NULL,
     outlier.shape = 19, outlier.size = 1.5, 
     outlier.stroke = 0.5, outlier.alpha = NULL,
@@ -112,7 +110,7 @@ GeomHalfBoxplot <- ggproto("GeomHalfBoxplot", GeomBoxplot,
     
     common <- data.frame(
       colour = data$colour,
-      size = data$size,
+      linewidth = data$linewidth,
       linetype = data$linetype,
       fill = alpha(data$fill, data$alpha),
       group = data$group,
@@ -195,7 +193,7 @@ GeomHalfBoxplot <- ggproto("GeomHalfBoxplot", GeomBoxplot,
       )
     
     if (!is.null(data$outliers) && length(data$outliers[[1]] >= 1)) {
-      outliers <- ggplot2:::new_data_frame(list(
+      outliers <- ggplot2:::data_frame0(
         y = data$outliers[[1]],
         x = data$x[1] + switch((side == "r") + 1, nudge * -1, nudge),
         colour = outlier.colour %||% data$colour[1],
@@ -204,8 +202,9 @@ GeomHalfBoxplot <- ggproto("GeomHalfBoxplot", GeomBoxplot,
         size = outlier.size %||% data$size[1],
         stroke = outlier.stroke %||% data$stroke[1],
         fill = NA,
-        alpha = outlier.alpha %||% data$alpha[1]
-      ), n = length(data$outliers[[1]]))
+        alpha = outlier.alpha %||% data$alpha[1],
+        .size = length(data$outliers[[1]])
+        )
       
       if (isTRUE(center)) {
         if (side == "r") {
@@ -222,8 +221,15 @@ GeomHalfBoxplot <- ggproto("GeomHalfBoxplot", GeomBoxplot,
     tree <- grobTree(
       outliers_grob,
       error_grob,
-      GeomSegment$draw_panel(whiskers, panel_params, coord),
-      GeomCrossbar$draw_panel(box, fatten = fatten, panel_params, coord)
+      GeomSegment$draw_panel(whiskers, panel_params, coord, lineend = lineend),
+      GeomCrossbar$draw_panel(
+        box, 
+        fatten = fatten, 
+        panel_params, 
+        coord,
+        lineend = lineend,
+        linejoin = linejoin
+      )
   )
   tree$name <- grid::grobName(tree, "geom_half_boxplot")
   tree
